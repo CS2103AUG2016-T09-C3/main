@@ -70,10 +70,6 @@ public class Task implements ReadOnlyTask {
         return this.isRecurring;
     }
     
-    public boolean getIsRecurring(){
-    	return this.isRecurring;
-    }
-    
     public PriorityType getPriority(){
     	return this.priority;
     }
