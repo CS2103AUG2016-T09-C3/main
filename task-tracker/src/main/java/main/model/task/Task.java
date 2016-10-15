@@ -66,6 +66,9 @@ public class Task implements ReadOnlyTask {
     public boolean getIsEvent(){
         return this.isEvent;
     }
+    public boolean getIsRecurring(){
+        return this.isRecurring;
+    }
     
     public boolean getIsRecurring(){
     	return this.isRecurring;
