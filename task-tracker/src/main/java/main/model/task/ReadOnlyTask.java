@@ -14,7 +14,6 @@ public interface ReadOnlyTask {
     Date getDeadline();
     boolean getIsFloating();
     boolean getIsEvent();
-    boolean getIsRecurring();
     
 
     /**
@@ -28,7 +27,6 @@ public interface ReadOnlyTask {
                 && other.getEndTime().equals(this.getEndTime())
                 && other.getDeadline().equals(this.getDeadline())
                 && other.getIsFloating() == this.getIsFloating()
-                && other.getIsRecurring() == this.getIsRecurring()
                 && other.getIsEvent() == this.getIsEvent());
                 
     }
@@ -43,7 +41,6 @@ public interface ReadOnlyTask {
                 .append(getEndTime())
                 .append(getDeadline())
                 .append(getIsFloating())
-                .append(getIsRecurring())
         		.append(getIsEvent());
                 
                 
