@@ -28,8 +28,6 @@ public class XmlAdaptedTask {
     private boolean isFloating;    
     @XmlElement(required = true)
     private boolean isEvent;
-    @XmlElement(required = true)
-    private boolean isRecurring;
     
     //@XmlElement
     //private List<XmlAdaptedTag> tagged = new ArrayList<>();
@@ -52,7 +50,6 @@ public class XmlAdaptedTask {
         endTime = source.getEndTime();
         isFloating = source.getIsFloating();
         isEvent = source.getIsEvent();
-        isRecurring = source.getIsRecurring();
     }
 
     /**
@@ -61,9 +58,8 @@ public class XmlAdaptedTask {
      * @throws IllegalValueException if there were any data constraints violated in the adapted person
      */
     public Task toModelType() throws IllegalValueException {
-        
-        if (isFloating)return new Task(message);
-        
+            
+        if (isFloating) return new Task(message);
         else if (isEvent) return new Task(message, startTime, endTime);
         else return new Task(message, deadline);
     }
