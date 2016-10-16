@@ -49,16 +49,16 @@ public class Config {
         return taskTrackerFilePath;
     }
 
-    public void setTaskTrackerFilePath(String addressBookFilePath) {
-        this.taskTrackerFilePath = addressBookFilePath;
+    public void setTaskTrackerFilePath(String taskTrackerFilePath) {
+        this.taskTrackerFilePath = taskTrackerFilePath;
     }
 
     public String getTaskTrackerName() {
         return taskTrackerName;
     }
 
-    public void setTaskTrackerName(String addressBookName) {
-        this.taskTrackerName = addressBookName;
+    public void setTaskTrackerName(String taskTrackerName) {
+        this.taskTrackerName = taskTrackerName;
     }
 
 
@@ -92,7 +92,7 @@ public class Config {
         sb.append("\nCurrent log level : " + logLevel);
         sb.append("\nPreference file Location : " + userPrefsFilePath);
         sb.append("\nLocal data file location : " + taskTrackerFilePath);
-        sb.append("\nAddressBook name : " + taskTrackerName);
+        sb.append("\nTaskTracker name : " + taskTrackerName);
         return sb.toString();
     }
 
