@@ -1,46 +1,35 @@
 package main.model.task;
 
-public class FloatingTask extends Task implements ReadOnlyTask {
+public class FloatingTask extends Task {
 	
-	private boolean isDone;
-	
-	
-	public FloatingTask(){
-		super();
-		this.isDone = false;
-		
-	}
-	
-	public FloatingTask(String message){
+	public FloatingTask(String message) {
 		super(message);
-		this.isDone = false;
+	    if(message == null){
+	    	message ="";
+	    }
+	    else {
+	    	this.setIsFloating(true);
+	    }
+	        
+	    this.setPriority(PriorityType.NORMAL);
+	    this.setIsRecurring(false);   
+	        
 	}
 	
-	public FloatingTask(FloatingTask task){
-		task.setMessage(task.getMessage());
-		this.isDone = true;
-	}
-	
-	//getters
-	public boolean isComplete(){
-		return isDone ;
-	}
-	
-	//setters
-	public void setDone(){
-		this.isDone = true;
-	}
-	public void setUndone(){
-		this.isDone = false;
+	@Override
+	public boolean equals(Object other) {
+        if (this == other) return true;
+        else if (other instanceof Task) {
+        	if(this.getIsFloating()){ 
+        		return (this.getMessage().equals(((Task) other).getMessage()));
+        	}
+        }
+        return false;
 	}
 	
 	@Override
 	public String toString(){
 			return this.getMessage();
-	}
-	
-	
-	
-	
+	}		
 	
 }
