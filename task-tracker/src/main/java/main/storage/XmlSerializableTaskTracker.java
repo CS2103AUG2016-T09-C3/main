@@ -4,23 +4,14 @@ import main.commons.exceptions.IllegalValueException;
 //import main.model.tag.Tag;
 //import main.model.tag.UniqueTagList;
 import main.model.ReadOnlyTaskTracker;
-import main.model.task.PriorityType;
 import main.model.task.ReadOnlyTask;
-import main.model.task.StorageTask;
 import main.model.task.UniqueTaskList;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.logging.Log;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -70,7 +61,6 @@ public class XmlSerializableTaskTracker implements ReadOnlyTaskTracker {
         for (XmlAdaptedTask t : tasks) {
             try {
                 lists.add(t.toModelType());
-                System.out.println(lists.getInternalList().get(lists.getInternalList().size() - 1 ));
             } catch (IllegalValueException e) {
                 //TODO: better error handling
             }

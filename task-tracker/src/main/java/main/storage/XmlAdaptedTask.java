@@ -70,18 +70,6 @@ public class XmlAdaptedTask {
         isRecurring = String.valueOf(source.getIsRecurring());
         priority = source.getPriority().name();
     }
-    
-    public XmlAdaptedTask(StorageTask source) {
-        message = source.getMessage();
-        deadline = Long.toString(source.getDeadline());
-        startTime =Long.toString(source.getStartTime());
-        endTime = Long.toString(source.getEndTime());
-        isFloating = String.valueOf(source.isFloating());
-        isEvent = String.valueOf(source.isEvent());
-        isDeadline = String.valueOf(source.isDeadline());
-        isRecurring = String.valueOf(source.isRecurring());
-        priority = String.valueOf(source.getPriority());
-    }
 
     /**
      * Converts this jaxb-friendly adapted person object into the model's Person object.
