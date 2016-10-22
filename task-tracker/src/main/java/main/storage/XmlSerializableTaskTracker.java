@@ -49,44 +49,7 @@ public class XmlSerializableTaskTracker implements ReadOnlyTaskTracker {
      */
     
     public XmlSerializableTaskTracker(ReadOnlyTaskTracker src) {
-        
-        ArrayList<StorageTask> tempTasks = new ArrayList<StorageTask>();
-        int i=0;
-        String message;
-        String deadline;
-        String startTime;
-        String endTime;
-        String isFloating;
-        String isDeadline;
-        String isEvent;
-        String isRecurring;
-        String priorityType;
-       
-        
-        for(i=0;i<src.getTaskList().size();i++){
-            deadline = "0";
-            startTime = "0";
-            endTime = "0";
-            
-            
-            message = src.getTaskList().get(i).getMessage();
-            isFloating = String.valueOf(src.getTaskList().get(i).getIsFloating());
-            isDeadline = String.valueOf(src.getTaskList().get(i).getIsDeadline());
-            isEvent = String.valueOf(src.getTaskList().get(i).getIsEvent());
-            isRecurring = String.valueOf(src.getTaskList().get(i).getIsRecurring());
-            priorityType= src.getTaskList().get(i).getPriority().name();
-            
-            if(isEvent.equals("true")){
-              startTime = String.valueOf(src.getTaskList().get(i).getStartTime().getTime());
-              endTime = String.valueOf((src.getTaskList().get(i).getEndTime()).getTime());
-            }
-            else if(isDeadline.equals("true")){
-                deadline = String.valueOf(src.getTaskList().get(i).getDeadline().getTime()); 
-            }
-            tempTasks.add(new StorageTask(message, deadline, startTime, endTime, isFloating, isDeadline, isEvent, isRecurring, priorityType));        
-        
-        }
-        tasks.addAll(tempTasks.stream().map(XmlAdaptedTask::new).collect(Collectors.toList()));
+        tasks.addAll(src.getTaskList().stream().map(XmlAdaptedTask::new).collect(Collectors.toList()));
         //tags = src.getTagList();
     }
 

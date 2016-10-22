@@ -61,14 +61,14 @@ public class XmlAdaptedTask {
      */
     public XmlAdaptedTask(ReadOnlyTask source) {
         message = source.getMessage();
-        deadline = source.getDeadline().toString();
-        startTime =source.getStartTime().toString();
-        endTime = source.getEndTime().toString();
+        deadline = String.valueOf(source.getDeadline().getTime());
+        startTime = String.valueOf(source.getStartTime().getTime());
+        endTime = String.valueOf(source.getEndTime().getTime());
         isFloating = String.valueOf(source.getIsFloating());
         isEvent = String.valueOf(source.getIsEvent());
         isDeadline = String.valueOf(source.getIsDeadline());
         isRecurring = String.valueOf(source.getIsRecurring());
-        priority = String.valueOf(source.getPriority());
+        priority = source.getPriority().name();
     }
     
     public XmlAdaptedTask(StorageTask source) {
