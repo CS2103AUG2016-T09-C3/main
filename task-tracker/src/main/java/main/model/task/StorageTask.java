@@ -2,22 +2,24 @@ package main.model.task;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.BooleanUtils;
+
 public class StorageTask {
     private String message;
-    private long deadline;
-    private long startTime;
-    private long endTime;
-    private boolean isFloating;
-    private boolean isDeadline;
-    private boolean isEvent;
-    private boolean isRecurring;
-    private PriorityType priority;
+    private String deadline;
+    private String startTime;
+    private String endTime;
+    private String isFloating;
+    private String isDeadline;
+    private String isEvent;
+    private String isRecurring;
+    private String priority;
    
     
     
     
-    public StorageTask(String message, long deadline, long startTime, long endTime, boolean isFloating,
-            boolean isDeadline, boolean isEvent, boolean isRecurring, PriorityType priority) {
+    public StorageTask(String message, String deadline, String startTime, String endTime, String isFloating,
+            String isDeadline, String isEvent, String isRecurring, String priority) {
         super();
         this.message = message;
         this.deadline = deadline;
@@ -37,52 +39,52 @@ public class StorageTask {
         this.message = message;
     }
     public long getDeadline() {
-        return deadline;
+        return Long.valueOf(deadline);
     }
     public void setDeadline(long deadline) {
-        this.deadline = deadline;
+        this.deadline = String.valueOf(deadline);
     }
     public long getStartTime() {
-        return startTime;
+        return Long.valueOf(startTime);
     }
     public void setStartTime(long startTime) {
-        this.startTime = startTime;
+        this.startTime = String.valueOf(startTime);
     }
     public long getEndTime() {
-        return endTime;
+        return Long.valueOf(endTime);
     }
     public void setEndTime(long endTime) {
-        this.endTime = endTime;
+        this.endTime = String.valueOf(endTime);
     }
     public boolean isFloating() {
-        return isFloating;
+        return BooleanUtils.toBoolean(isFloating);
     }
     public void setFloating(boolean isFloating) {
-        this.isFloating = isFloating;
+        this.isFloating = String.valueOf(isFloating);
     }
     public boolean isDeadline() {
-        return isDeadline;
+        return BooleanUtils.toBoolean(isDeadline);
     }
     public void setDeadline(boolean isDeadline) {
-        this.isDeadline = isDeadline;
+        this.isDeadline = String.valueOf(isDeadline);
     }
     public boolean isEvent() {
-        return isEvent;
+        return BooleanUtils.toBoolean(isEvent);
     }
     public void setEvent(boolean isEvent) {
-        this.isEvent = isEvent;
+        this.isEvent = String.valueOf(isEvent);
     }
     public boolean isRecurring() {
-        return isRecurring;
+        return BooleanUtils.toBoolean(isRecurring);
     }
     public void setRecurring(boolean isRecurring) {
-        this.isRecurring = isRecurring;
+        this.isRecurring = String.valueOf(isRecurring);
     }
     public PriorityType getPriority() {
-        return priority;
+        return PriorityType.valueOf(priority);
     }
     public void setPriority(PriorityType priority) {
-        this.priority = priority;
+        this.priority = priority.name();
     }
     
     

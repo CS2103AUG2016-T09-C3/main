@@ -92,12 +92,10 @@ public class XmlAdaptedTask {
     
     
     public Task toModelType(){
-        logger.info("TASK   "+"starttime "+ startTime + "endtime " + endTime + "isFloat" + isFloating + "isDead" + isDeadline+ "isevent" + isEvent);    
-        if (isFloating=="true")
+        if (isFloating.equals("true"))
             return new Task(message, PriorityType.valueOf(priority));
-        else if (isEvent=="true")
+        else if (isEvent.equals("true"))
             return new Task(message,new Date(Long.valueOf(startTime)),new Date(Long.valueOf(endTime)), PriorityType.valueOf(priority));
-        
         else return new Task(message, new Date(Long.valueOf(deadline)), PriorityType.valueOf(priority));
         
     }

@@ -12,6 +12,7 @@ import main.model.task.UniqueTaskList;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.logging.Log;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
@@ -52,35 +53,35 @@ public class XmlSerializableTaskTracker implements ReadOnlyTaskTracker {
         ArrayList<StorageTask> tempTasks = new ArrayList<StorageTask>();
         int i=0;
         String message;
-        long deadline;
-        long startTime;
-        long endTime;
-        boolean isFloating;
-        boolean isDeadline;
-        boolean isEvent;
-        boolean isRecurring;
-        PriorityType priorityType;
+        String deadline;
+        String startTime;
+        String endTime;
+        String isFloating;
+        String isDeadline;
+        String isEvent;
+        String isRecurring;
+        String priorityType;
        
         
         for(i=0;i<src.getTaskList().size();i++){
-            deadline=00000;
-            startTime=000000;
-            endTime=000000;
+            deadline = "0";
+            startTime = "0";
+            endTime = "0";
             
             
-            message=src.getTaskList().get(i).getMessage();
-            isFloating=src.getTaskList().get(i).getIsFloating();
-            isDeadline=src.getTaskList().get(i).getIsFloating();
-            isEvent=src.getTaskList().get(i).getIsEvent();
-            isRecurring=src.getTaskList().get(i).getIsRecurring();
-            priorityType=src.getTaskList().get(i).getPriority();
+            message = src.getTaskList().get(i).getMessage();
+            isFloating = String.valueOf(src.getTaskList().get(i).getIsFloating());
+            isDeadline = String.valueOf(src.getTaskList().get(i).getIsDeadline());
+            isEvent = String.valueOf(src.getTaskList().get(i).getIsEvent());
+            isRecurring = String.valueOf(src.getTaskList().get(i).getIsRecurring());
+            priorityType= src.getTaskList().get(i).getPriority().name();
             
-            if(isEvent==true){
-              startTime=(src.getTaskList().get(i).getStartTime()).getTime();
-              endTime=(src.getTaskList().get(i).getEndTime()).getTime();
+            if(isEvent.equals("true")){
+              startTime = String.valueOf(src.getTaskList().get(i).getStartTime().getTime());
+              endTime = String.valueOf((src.getTaskList().get(i).getEndTime()).getTime());
             }
-            if(isDeadline==true){
-                deadline=(src.getTaskList().get(i).getDeadline()).getTime(); 
+            else if(isDeadline.equals("true")){
+                deadline = String.valueOf(src.getTaskList().get(i).getDeadline().getTime()); 
             }
             tempTasks.add(new StorageTask(message, deadline, startTime, endTime, isFloating, isDeadline, isEvent, isRecurring, priorityType));        
         
@@ -106,6 +107,7 @@ public class XmlSerializableTaskTracker implements ReadOnlyTaskTracker {
         for (XmlAdaptedTask t : tasks) {
             try {
                 lists.add(t.toModelType());
+                System.out.println(lists.getInternalList().get(lists.getInternalList().size() - 1 ));
             } catch (IllegalValueException e) {
                 //TODO: better error handling
             }
