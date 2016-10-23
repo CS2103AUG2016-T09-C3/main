@@ -9,8 +9,8 @@ import main.model.task.UniqueTaskList;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +38,7 @@ public class XmlSerializableTaskTracker implements ReadOnlyTaskTracker {
     /**
      * Conversion
      */
+    
     public XmlSerializableTaskTracker(ReadOnlyTaskTracker src) {
         tasks.addAll(src.getTaskList().stream().map(XmlAdaptedTask::new).collect(Collectors.toList()));
         //tags = src.getTagList();
@@ -70,13 +71,7 @@ public class XmlSerializableTaskTracker implements ReadOnlyTaskTracker {
     @Override
     public List<ReadOnlyTask> getTaskList() {
         return tasks.stream().map(t -> {
-            try {
-                return t.toModelType();
-            } catch (IllegalValueException e) {
-                e.printStackTrace();
-                //TODO: better error handling
-                return null;
-            }
+            return t.toModelType();
         }).collect(Collectors.toCollection(ArrayList::new));
     }
 

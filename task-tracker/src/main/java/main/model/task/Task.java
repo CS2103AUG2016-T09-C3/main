@@ -97,15 +97,13 @@ public class Task implements ReadOnlyTask {
     
     
     public Task(ReadOnlyTask src) {
-        this(src.getMessage());
-        if (!src.getIsFloating()) {
-            if (!src.getIsEvent()) 
-                this.deadline = src.getDeadline();
-            else {
-                this.startTime = src.getStartTime();
-                this.endTime = src.getEndTime();
-            }
-        }
+        this.message = src.getMessage();
+        this.deadline = src.getDeadline();
+        this.startTime = src.getStartTime();
+        this.endTime = src.getEndTime(); 
+        this.isFloating = src.getIsFloating();
+        this.isDeadline = src.getIsDeadline();
+        this.isEvent = src.getIsEvent();
     }
     //getters
     @Override
