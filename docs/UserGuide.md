@@ -128,7 +128,7 @@ Let say task index **1** refers to the task `wash dishes monday 4pm`
 ### 7. HELP command
 
 Enter `help` into the command line to list out all the commands available in T-T.
-
+//@@author A0139750B
 ## **T-T List Statistics**
 
 T-T also provides an intuitive listing the number of tasks stored, giving you a clearer idea on how to better deal with them. As seen in **the example below**, the numbers are displayed on the right of the task list. 

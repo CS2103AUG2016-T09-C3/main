@@ -116,7 +116,6 @@ The sections below give more details of each component.
 3. The command execution can affect the `Model` (e.g. adding a task) and/or raise events.
 4. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `UI`.
 
-//@@author A0139750B
 ####UI
 ![UI](images/A_UI.png)<br>
 
@@ -205,7 +204,7 @@ Here are the steps to create a new release.
  2. Tag the repo with the version number. e.g. `v0.1`
  2. [Crete a new release using GitHub](https://help.github.com/articles/creating-releases/) 
     and upload the JAR file your created.
-   
+ //@@author A0139750B  
 ### Managing Dependencies
 
 A project often depends on third-party libraries. For example, Task-Tracker Book depends on the
