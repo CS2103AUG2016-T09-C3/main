@@ -76,7 +76,7 @@ The format to edit an existing task is : <br>
 Let’s say task index “**1**” refers to the task `wash dishes monday 4pm`
 
 *  `edit 1 wash dishes tuesday 6pm -h` will edit the existing `wash dishes` task to `use dishes` and change the date from **monday** to **tuesday** , time from **4pm** to **6pm** and priority from **medium** to **high**.
-
+//@@author A0139750B
 ###3. DELETE a Task
 
 The format to edit an existing task is : <br>
