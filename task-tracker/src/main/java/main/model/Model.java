@@ -1,3 +1,4 @@
+//@@author A0139750B
 package main.model;
 
 import main.model.task.Task;
@@ -29,7 +30,7 @@ public interface Model {
     /** Returns the AddressBook */
     ReadOnlyTaskTracker getTaskTracker();
 
-    /** Deletes the given person. */
+    /** Deletes the given task. */
     void deleteTask(int index) throws UniqueTaskList.TaskNotFoundException;
     
     /** Marks the task at the given index as done **/
