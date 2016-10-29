@@ -48,7 +48,7 @@ public class DeleteCommandTest extends TaskTrackerGuiTest {
         assertTrue(taskListPanel.isListMatching(expectedRemainder));
 
         //confirm the result message is correct
-        assertResultMessage(String.format("Deleted Task: " +(targetIndexOneIndexed-1) , taskToDelete));
+        assertResultMessage(String.format("Deleted Task: " +targetIndexOneIndexed , taskToDelete));
     }
 
 }

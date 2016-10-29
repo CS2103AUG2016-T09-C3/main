@@ -32,19 +32,6 @@ public class AddCommandTest extends TaskTrackerGuiTest {
         commandBox.runCommand(TypicalTestTasks.floating2.getAddCommand());
         assertResultMessage(AddCommand.MESSAGE_DUPLICATE_TASK);
         assertTrue(taskListPanel.isListMatching(currentList));
-//        
-////        add duplicate event task
-////        commandBox.runCommand(TypicalTestTasks.event2.getAddCommand());
-////        System.out.println(TypicalTestTasks.event2.getDeadline());
-////        System.out.println(TypicalTestTasks.event2.getStartTime());
-////        System.out.println(TypicalTestTasks.event2.getEndTime());
-////        assertResultMessage(AddCommand.MESSAGE_DUPLICATE_TASK);
-////        assertTrue(taskListPanel.isListMatching(currentList));
-        
-        //add duplicate deadline task
-//        commandBox.runCommand(TypicalTestTasks.deadline2.getAddCommand());
-//        assertResultMessage(AddCommand.MESSAGE_DUPLICATE_TASK);
-//        assertTrue(taskListPanel.isListMatching(currentList));
         
 //        //add to empty list
         commandBox.runCommand("clear");

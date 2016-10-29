@@ -19,7 +19,7 @@ public class DeleteCommand extends Command {
             + "Eg: " + COMMAND_WORD + " 1";
 
 
-    public static final String MESSAGE_DELETE_TASK_SUCCESS = "Deleted Task: %1$s";
+    public static final String MESSAGE_DELETE_TASK_SUCCESS = "Deleted Task: ";
 
     
     private int taskIndex;
@@ -35,7 +35,7 @@ public class DeleteCommand extends Command {
     public CommandResult execute() {
         try {
             model.deleteTask(taskIndex);
-            return new CommandResult(String.format(MESSAGE_DELETE_TASK_SUCCESS, taskIndex));
+            return new CommandResult(String.format(MESSAGE_DELETE_TASK_SUCCESS + (taskIndex+1) + "", taskIndex));
 
         } catch (IndexOutOfBoundsException ie) {
             return new CommandResult("The task index provided is invalid");

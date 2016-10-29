@@ -23,10 +23,10 @@ import javafx.geometry.Pos;
 public class ListStatistics extends UiPart {
 
 	private static final String FXML = "ListStatistics.fxml";
-	
-    @FXML
-    private Label floatingtasks;	
-    
+
+	@FXML
+	private Label floatingtasks;
+
 	@FXML
 	private Label alltasks;
 
@@ -44,33 +44,33 @@ public class ListStatistics extends UiPart {
 
 	@FXML
 	private ImageView image;
-	
-	private static final String TODAY_TASK_MESSAGE = "No. of Task Due Today: ";
-	private static final String TOMORROW_TASK_MESSAGE = "No. of Task Due Tomorrow: ";
-	private static final String EVENT_TASK_MESSAGE = "No. of Events: ";
-	private static final String DEADLINE_TASK_MESSAGE = "No. of Deadlines: ";
-	private static final String FLOATING_TASK_MESSAGE = "No. of Floating: ";
-	private static final String ALL_TASK_MESSAGE = "Total: ";
-	
+
+	private static final String TODAY_TASK_MESSAGE = " <-: Tasks Due Today ";
+	private static final String TOMORROW_TASK_MESSAGE = " <-: Tasks Due Tomorrow ";
+	private static final String EVENT_TASK_MESSAGE = " <-: Events ";
+	private static final String DEADLINE_TASK_MESSAGE = " <-: Deadlines ";
+	private static final String FLOATING_TASK_MESSAGE = " <-: Floating ";
+	private static final String ALL_TASK_MESSAGE = " <-: Total ";
+
 	private Model model;
-	
+
 	private static Logic logic;
-	
+
 	private AnchorPane placeHolder;
 
 	private static VBox mainPane;
-	
+
 	private static ListStatistics listDisplay;
-	
-	private StringProperty todaytaskNo = new SimpleStringProperty(""); 
-	private StringProperty tomorrowtaskNo  = new SimpleStringProperty("");
-	private StringProperty eventtaskNo  = new SimpleStringProperty("");
-	private StringProperty deadlinetaskNo  = new SimpleStringProperty("");
-	private StringProperty floatingtaskNo  = new SimpleStringProperty("");
-	private StringProperty alltaskNo  = new SimpleStringProperty("");
-	
-	public static ListStatistics load(Stage primaryStage, AnchorPane placeHolder,Logic logic) {
-		listDisplay = UiPartLoader.loadUiPart(primaryStage, placeHolder, new ListStatistics()); 
+
+	private StringProperty todaytaskNo = new SimpleStringProperty("");
+	private StringProperty tomorrowtaskNo = new SimpleStringProperty("");
+	private StringProperty eventtaskNo = new SimpleStringProperty("");
+	private StringProperty deadlinetaskNo = new SimpleStringProperty("");
+	private StringProperty floatingtaskNo = new SimpleStringProperty("");
+	private StringProperty alltaskNo = new SimpleStringProperty("");
+
+	public static ListStatistics load(Stage primaryStage, AnchorPane placeHolder, Logic logic) {
+		listDisplay = UiPartLoader.loadUiPart(primaryStage, placeHolder, new ListStatistics());
 		ListStatistics.logic = logic;
 		listDisplay.configure();
 		return listDisplay;
@@ -90,7 +90,8 @@ public class ListStatistics extends UiPart {
 		bindingAllStringProperty();
 		initializeStringProperty();
 		setListIcon();
-		mainPane.getChildren().addAll(image, todaytasks, tomorrowtasks, eventtasks, deadlinetasks,floatingtasks, alltasks);
+		mainPane.getChildren().addAll(image, todaytasks, tomorrowtasks, eventtasks, deadlinetasks, floatingtasks,
+				alltasks);
 		mainPane.setSpacing(30.0);
 		mainPane.setPadding(new Insets(30.0, 0.0, 30.0, 30.0));
 		placeHolder.getChildren().add(mainPane);
@@ -110,58 +111,81 @@ public class ListStatistics extends UiPart {
 	private void setListIcon() {
 		image = new ImageView(AppUtil.getImage("/images/statistics.png"));
 	}
-	
+
 	/**
-	 * Remember to change both methods below on Wednesday when you meeet up to recombine.
-	 * You would not be using logic to get the data. You will have to use the model component directly. Wait for Ruth
+	 * Remember to change both methods below on Wednesday when you meeet up to
+	 * recombine. You would not be using logic to get the data. You will have to
+	 * use the model component directly. Wait for Ruth
 	 */
 	private void initializeStringProperty() {
-		todaytaskNo.setValue(TODAY_TASK_MESSAGE + logic.getNumToday());
-		tomorrowtaskNo.setValue(TOMORROW_TASK_MESSAGE + logic.getNumTmr());
-		eventtaskNo.setValue(EVENT_TASK_MESSAGE + logic.getNumEvent());
-		deadlinetaskNo.setValue(DEADLINE_TASK_MESSAGE + logic.getNumDeadline());
-		floatingtaskNo.setValue(FLOATING_TASK_MESSAGE + logic.getNumFloating());
-		alltaskNo.setValue(ALL_TASK_MESSAGE + logic.getFilteredTaskList().size());
+		todaytaskNo.setValue(logic.getNumToday() + TODAY_TASK_MESSAGE);
+		tomorrowtaskNo.setValue(logic.getNumTmr() + TOMORROW_TASK_MESSAGE);
+		eventtaskNo.setValue(logic.getNumEvent() + EVENT_TASK_MESSAGE);
+		deadlinetaskNo.setValue(logic.getNumDeadline() + DEADLINE_TASK_MESSAGE);
+		floatingtaskNo.setValue(logic.getNumFloating() + FLOATING_TASK_MESSAGE);
+		alltaskNo.setValue(logic.getTotalNum() + ALL_TASK_MESSAGE);
 	}
 	
-	public static void updateStatistics(){
-		listDisplay.getTodayTaskNo().setValue(TODAY_TASK_MESSAGE+logic.getNumToday());
-		listDisplay.getTomorrowTaskNo().setValue(TOMORROW_TASK_MESSAGE+logic.getNumTmr());
-		listDisplay.getEventTaskNo().setValue(EVENT_TASK_MESSAGE+logic.getNumEvent());
-		listDisplay.getDeadlineTaskNo().setValue(DEADLINE_TASK_MESSAGE+logic.getNumDeadline());
-		listDisplay.getFloatingTaskNo().setValue(FLOATING_TASK_MESSAGE+logic.getNumFloating());
-		listDisplay.getAllTaskNo().setValue(ALL_TASK_MESSAGE+logic.getFilteredTaskList().size());
-		
+	public static void updateAll(String command){
+		updateListImage(command);
+		updateStatistics();		
 	}
 	
-	public StringProperty getTodayTaskNo(){
+	public static void updateStatistics() {
+		listDisplay.getTodayTaskNo().setValue(logic.getNumToday() + TODAY_TASK_MESSAGE);
+		listDisplay.getTomorrowTaskNo().setValue(logic.getNumTmr() + TOMORROW_TASK_MESSAGE);
+		listDisplay.getEventTaskNo().setValue(logic.getNumEvent() + EVENT_TASK_MESSAGE);
+		listDisplay.getDeadlineTaskNo().setValue(logic.getNumDeadline() + DEADLINE_TASK_MESSAGE);
+		listDisplay.getFloatingTaskNo().setValue(logic.getNumFloating() + FLOATING_TASK_MESSAGE);
+		listDisplay.getAllTaskNo().setValue(logic.getTotalNum() + ALL_TASK_MESSAGE);
+
+	}
+
+	public static void updateListImage(String command) {
+		if (command.matches("[a-zA-Z ]*\\d+.*"))
+			listDisplay.getImage().setImage(AppUtil.getImage("/images/calendar.png"));
+		else if (command.contains("events"))
+			listDisplay.getImage().setImage(AppUtil.getImage("/images/events.png"));
+		else if (command.contains("deadlines"))
+			listDisplay.getImage().setImage(AppUtil.getImage("/images/deadlines.png"));
+		else if (command.contains("floating"))
+			listDisplay.getImage().setImage(AppUtil.getImage("/images/floating.png"));
+		else 
+			listDisplay.getImage().setImage(AppUtil.getImage("/images/statistics.png"));
+	}
+
+	public StringProperty getTodayTaskNo() {
 		return todaytaskNo;
 	}
-	
-	public StringProperty getTomorrowTaskNo(){
+
+	public StringProperty getTomorrowTaskNo() {
 		return tomorrowtaskNo;
 	}
-	
-	public StringProperty getEventTaskNo(){
+
+	public StringProperty getEventTaskNo() {
 		return eventtaskNo;
 	}
-	
-	public StringProperty getDeadlineTaskNo(){
+
+	public StringProperty getDeadlineTaskNo() {
 		return deadlinetaskNo;
 	}
-	
-	public StringProperty getFloatingTaskNo(){
-        return floatingtaskNo;
-    }
-	
-	public Label getAllTasksLabel(){
+
+	public StringProperty getFloatingTaskNo() {
+		return floatingtaskNo;
+	}
+
+	public Label getAllTasksLabel() {
 		return alltasks;
 	}
-	
-	public StringProperty getAllTaskNo(){
+
+	public StringProperty getAllTaskNo() {
 		return alltaskNo;
 	}
-		
+
+	public ImageView getImage() {
+		return image;
+	}
+
 	@Override
 	public void setNode(Node node) {
 		mainPane = (VBox) node;

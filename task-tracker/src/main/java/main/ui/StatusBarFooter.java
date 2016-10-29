@@ -103,4 +103,11 @@ public class StatusBarFooter extends UiPart {
         logger.info(LogsCenter.getEventHandlingLogMessage(abce, "Setting last updated status to " + lastUpdated));
         setSyncStatus("Last Updated: " + lastUpdated);
     }
+    
+    public void changeStyle(String colorChange){
+    	mainPane.setStyle(colorChange);
+    	saveLocStatusBarPane.setStyle(colorChange);
+    	syncStatusBarPane.setStyle(colorChange);
+    	placeHolder.setStyle(colorChange);
+    }
 }

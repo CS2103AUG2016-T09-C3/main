@@ -43,6 +43,8 @@ public class TaskCard extends UiPart{
     private Label endtime;
     @FXML
     private Label starttime;
+    @FXML
+    private Label recurring;
     
     @FXML
     private Rectangle priorityTab;
@@ -73,6 +75,7 @@ public class TaskCard extends UiPart{
     private void setTaskCardText() {
     	
     	message.setText(task.getMessage());
+        message.setWrapText(true);
         
         id.setText(displayedIndex + ". ");
         
@@ -90,6 +93,11 @@ public class TaskCard extends UiPart{
             starttime.setText("Start: "+ task.getStartTimeString());
         else
             starttime.setText("");
+        
+        if (task.getIsRecurring())
+            recurring.setText("Weekly");
+        else
+            recurring.setText("");
 		
 	}
     
@@ -102,10 +110,15 @@ public class TaskCard extends UiPart{
 			priorityTab.setFill(Color.YELLOWGREEN);
 			cardPane.setStyle("-fx-background-color: #ffffb3;");
 		}
+//		else if (task.isOverdue()){
+//            priorityTab.setFill(Color.BLACK);
+//            cardPane.setStyle("-fx-background-color: #ff6666;");
+//        }
 		else{
-			priorityTab.setFill(Color.ORANGE);
+			priorityTab.setFill(Color.rgb(255, 117, 26));
 			cardPane.setStyle("-fx-background-color: #ffa366;");
-		}	
+		}
+		priorityTab.setStroke(Color.TRANSPARENT);
 	}
 
 	private void configureLayout() {

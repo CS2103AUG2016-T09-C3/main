@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="1.7976931348623157E308" styleClass="grid-pane" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.ui.StatusBarFooter">
+<GridPane maxHeight="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.ui.StatusBarFooter">
 <columnConstraints>
   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 </columnConstraints>
  <children>
-      <AnchorPane id="syncStatusBarPane" fx:id="syncStatusBarPane" maxHeight="1.7976931348623157E308" minWidth="0.0" styleClass="anchor-pane">
-         <stylesheets>
-            <URL value="@DarkTheme.css" />
-            <URL value="@Extensions.css" />
-         </stylesheets></AnchorPane>
-      <AnchorPane id="saveLocStatusBarPane" fx:id="saveLocStatusBarPane" maxHeight="1.7976931348623157E308" minWidth="0.0" styleClass="anchor-pane" GridPane.columnIndex="1" />
+      <AnchorPane id="syncStatusBarPane" fx:id="syncStatusBarPane" maxHeight="1.7976931348623157E308" minWidth="0.0" styleClass="anchor-pane" />
+      <AnchorPane id="saveLocStatusBarPane" fx:id="saveLocStatusBarPane" maxHeight="1.7976931348623157E308" minWidth="0.0" GridPane.columnIndex="1" />
  </children>
    <rowConstraints>
       <RowConstraints />

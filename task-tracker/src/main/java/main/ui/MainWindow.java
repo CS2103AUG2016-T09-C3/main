@@ -9,20 +9,26 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import main.commons.core.Config;
 import main.commons.core.GuiSettings;
 import main.commons.events.ui.ExitAppRequestEvent;
 import main.commons.util.FxViewUtil;
 import main.logic.Logic;
 import main.model.UserPrefs;
+import main.model.task.ReadOnlyTask;
 
 /**
  * Instantiates all the individual components for the Gui and interacts with
@@ -66,10 +72,10 @@ public class MainWindow extends UiPart {
 	private Scene scene;
 
 	private String taskTrackerName;
-	
+
 	@FXML
 	private SplitPane splitpane;
-	
+
 	@FXML
 	private AnchorPane commandBoxPlaceholder;
 
@@ -84,6 +90,14 @@ public class MainWindow extends UiPart {
 
 	@FXML
 	private AnchorPane listStatisticsPlaceholder;
+	
+//	.spiltpane{-fx-background-color: derive(#ff6666, 20%);}
+//	.spiltpane{-fx-background-color: derive(#ffffb3, 20%);}
+//	.spiltpane{-fx-background-color: derive(#ffa366, 20%);}
+	public static final KeyCodeCombination KEY_MINMAX = new KeyCodeCombination(KeyCode.M, KeyCodeCombination.ALT_DOWN);
+	public static final String[] colorWheel = {"-fx-background-color: derive(#008000, 20%);", "-fx-background-color: derive(#006080, 20%);", "-fx-background-color: derive(#b34700, 20%);"};
+	private static int taskPointer = 0;
+	private static int colorPointer = 7;
 
 	public MainWindow() {
 		super();
@@ -103,6 +117,8 @@ public class MainWindow extends UiPart {
 
 		MainWindow mainWindow = UiPartLoader.loadUiPart(primaryStage, new MainWindow());
 		mainWindow.configure(config.getAppTitle(), config.getTaskTrackerName(), config, prefs, logic);
+//		primaryStage.initStyle(StageStyle.TRANSPARENT);
+		primaryStage.setAlwaysOnTop(true);
 		return mainWindow;
 	}
 
@@ -121,7 +137,8 @@ public class MainWindow extends UiPart {
 		setWindowDefaultSize(prefs);
 		scene = new Scene(rootLayout);
 		primaryStage.setScene(scene);
-
+		
+		setWindowStyle();
 		// setAccelerators();
 	}
 
@@ -137,6 +154,7 @@ public class MainWindow extends UiPart {
 		commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
 		listStatistics = ListStatistics.load(primaryStage, getListStatisticsPlaceholder(), logic);
 		setInitialInputFocus();
+		handleAllEvents();
 		FxViewUtil.applyAnchorBoundaryParameters(rootLayout, 0.0, 0.0, 0.0, 0.0);
 		splitpane.maxWidthProperty().multiply(0.5);
 	}
@@ -187,8 +205,8 @@ public class MainWindow extends UiPart {
 	}
 
 	private void setWindowMinSize() {
-// primaryStage.setMinHeight(MIN_HEIGHT);
-//		primaryStage.setMaximized(true);
+		// primaryStage.setMinHeight(MIN_HEIGHT);
+		// primaryStage.setMaximized(true);
 	}
 
 	/**
@@ -203,10 +221,10 @@ public class MainWindow extends UiPart {
 		helpWindow = HelpWindow.load(primaryStage);
 		helpWindow.show();
 	}
-	
-	public void closeHelpWindow(){
-		if (helpWindow!=null)
-		   helpWindow.closeHelpWindow();
+
+	public void closeHelpWindow() {
+		if (helpWindow != null)
+			helpWindow.closeHelpWindow();
 	}
 
 	public void show() {
@@ -223,6 +241,114 @@ public class MainWindow extends UiPart {
 
 	public TaskListPanel getTaskListPanel() {
 		return this.taskListPanel;
+	}
+
+	public void handleAllEvents() {
+		handleMinimizeWindow();
+	    handleChangeColourTheme();
+		handleTaskListScrolling();
+	}
+
+	private void handleChangeColourTheme() {
+	    handleF1Event();
+	    handleF2Event();
+    }
+	
+	private void handleMinimizeWindow() {
+        rootLayout.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                primaryStage.setIconified(true);
+            }
+        }); 
+    }
+	
+    private void handleF1Event() {
+        rootLayout.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
+            if (event.getCode() == KeyCode.F1) {
+                if ((colorPointer + 1) > 7)
+                    colorPointer = 0;
+                else {
+                    colorPointer = colorPointer + 1;
+                }
+                setWindowStyle();
+            }
+        }); 
+    }
+    
+    private void handleF2Event() {
+        rootLayout.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
+            if (event.getCode() == KeyCode.F2) {
+                if ((colorPointer - 1) < 0)
+                    colorPointer = 7;
+                else {
+                    colorPointer = colorPointer - 1;
+                }
+                setWindowStyle();
+            }
+        }); 
+    }
+    
+    private void setWindowStyle(){
+    	rootLayout.getStylesheets().clear();
+    	switch(colorPointer){
+    		case 0:	rootLayout.getStylesheets().add(getClass().getResource("/css/RedTheme.css").toExternalForm()); break;
+    		
+    		case 1:	rootLayout.getStylesheets().add(getClass().getResource("/css/OrangeTheme.css").toExternalForm()); break;
+    		
+    		case 2:	rootLayout.getStylesheets().add(getClass().getResource("/css/YellowTheme.css").toExternalForm()); break;
+    		
+    		case 3:	rootLayout.getStylesheets().add(getClass().getResource("/css/GreenTheme.css").toExternalForm()); break;
+    		
+    		case 4:	rootLayout.getStylesheets().add(getClass().getResource("/css/BlueTheme.css").toExternalForm()); break;
+    		
+    		case 5:	rootLayout.getStylesheets().add(getClass().getResource("/css/IndigoTheme.css").toExternalForm()); break;
+    		
+    		case 6:	rootLayout.getStylesheets().add(getClass().getResource("/css/VioletTheme.css").toExternalForm()); break;
+    		
+    		case 7:	rootLayout.getStylesheets().add(getClass().getResource("/css/DarkTheme.css").toExternalForm()); break;
+    		
+    		default:rootLayout.getStylesheets().add(getClass().getResource("/css/DarkTheme.css").toExternalForm()); break;
+    		
+    	}  
+    	rootLayout.getStylesheets().add(getClass().getResource("/css/Extensions.css").toExternalForm());
+    	
+    }
+
+    private void handleTaskListScrolling() {
+		ListView<ReadOnlyTask> scrollList = taskListPanel.getTaskListView();
+		handlePageUp(scrollList);
+		handlePageDown(scrollList);
+	}
+
+	public void handlePageDown(ListView<ReadOnlyTask> scrollList) {
+
+		rootLayout.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
+			if (event.getCode() == KeyCode.PAGE_DOWN) {
+				if ((taskPointer + 1) > logic.getFilteredTaskList().size() - 1)
+				    taskPointer = 0;
+				else {
+                    taskPointer = taskPointer + 1;
+				}
+				System.out.println(taskPointer);
+				scrollList.scrollTo(taskPointer);
+			}
+		});
+
+	}
+
+	public void handlePageUp(ListView<ReadOnlyTask> scrollList) {
+
+		rootLayout.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
+			if (event.getCode() == KeyCode.PAGE_UP) {
+				if ((taskPointer - 1) < 0)
+	                taskPointer = logic.getFilteredTaskList().size() - 1;
+				else {
+					taskPointer = taskPointer - 1;
+				}
+				System.out.println(taskPointer);
+				scrollList.scrollTo(taskPointer);
+			}
+		});
 	}
 
 }

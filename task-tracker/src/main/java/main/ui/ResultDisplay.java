@@ -66,5 +66,9 @@ public class ResultDisplay extends UiPart {
     public void postMessage(String message) {
         displayed.setValue(message);
     }
+    
+    public void clearResultDisplay(){
+    	displayed.setValue("");
+    }
 
 }
