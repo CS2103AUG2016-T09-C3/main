@@ -64,7 +64,7 @@ allprojects {
 	    compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
 	    compile group: 'org.apache.commons', name: 'commons-lang3', version: "$apacheCommonsLang"
 	    
-	    testCompile files('libs/TrayNotification.jar')
+	    compile files('libs/TrayNotification.jar')
 	}
 	
 	sourceSets {
