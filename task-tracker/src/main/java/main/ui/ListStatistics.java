@@ -3,22 +3,21 @@ package main.ui;
 
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.commons.util.AppUtil;
 import main.commons.util.FxViewUtil;
 import main.logic.Logic;
 import main.model.Model;
+
+import java.util.ArrayList;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 
 public class ListStatistics extends UiPart {
 
@@ -42,6 +41,8 @@ public class ListStatistics extends UiPart {
 	@FXML
 	private Label todaytasks;
 
+	ArrayList<Label> labelList = new ArrayList<Label>(6);
+	
 	@FXML
 	private ImageView image;
 
@@ -51,7 +52,7 @@ public class ListStatistics extends UiPart {
 	private static final String DEADLINE_TASK_MESSAGE = " <-: Deadlines ";
 	private static final String FLOATING_TASK_MESSAGE = " <-: Floating ";
 	private static final String ALL_TASK_MESSAGE = " <-: Total ";
-
+	
 	private Model model;
 
 	private static Logic logic;
@@ -68,7 +69,9 @@ public class ListStatistics extends UiPart {
 	private StringProperty deadlinetaskNo = new SimpleStringProperty("");
 	private StringProperty floatingtaskNo = new SimpleStringProperty("");
 	private StringProperty alltaskNo = new SimpleStringProperty("");
-
+	
+	ArrayList<StringProperty> labelContent = new ArrayList<StringProperty>(6);
+	
 	public static ListStatistics load(Stage primaryStage, AnchorPane placeHolder, Logic logic) {
 		listDisplay = UiPartLoader.loadUiPart(primaryStage, placeHolder, new ListStatistics());
 		ListStatistics.logic = logic;
@@ -84,9 +87,10 @@ public class ListStatistics extends UiPart {
 		floatingtasks = new Label();
 		alltasks = new Label();
 	}
-
+	
 	public void configure() {
 		mainPane = new VBox();
+		convertToLabelList();
 		bindingAllStringProperty();
 		initializeStringProperty();
 		setListIcon();
@@ -97,6 +101,17 @@ public class ListStatistics extends UiPart {
 		placeHolder.getChildren().add(mainPane);
 		FxViewUtil.applyAnchorBoundaryParameters(mainPane, 0.0, 0.0, 0.0, 0.0);
 		placeHolder.setMaxWidth(400);
+	}
+	/**
+	 * Adds all six labels in a Arraylist for easy processing in later stages
+	 */
+	private void convertToLabelList() {
+		labelList.add(todaytasks);
+		labelList.add(tomorrowtasks);
+		labelList.add(eventtasks);
+		labelList.add(deadlinetasks);
+		labelList.add(floatingtasks);
+		labelList.add(alltasks);
 	}
 
 	private void bindingAllStringProperty() {
@@ -112,11 +127,6 @@ public class ListStatistics extends UiPart {
 		image = new ImageView(AppUtil.getImage("/images/statistics.png"));
 	}
 
-	/**
-	 * Remember to change both methods below on Wednesday when you meeet up to
-	 * recombine. You would not be using logic to get the data. You will have to
-	 * use the model component directly. Wait for Ruth
-	 */
 	private void initializeStringProperty() {
 		todaytaskNo.setValue(logic.getNumToday() + TODAY_TASK_MESSAGE);
 		tomorrowtaskNo.setValue(logic.getNumTmr() + TOMORROW_TASK_MESSAGE);

@@ -10,6 +10,9 @@ import main.commons.events.model.TaskTrackerChangedEvent;
 import main.commons.util.FxViewUtil;
 
 import main.commons.core.LogsCenter;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -51,13 +54,20 @@ public class StatusBarFooter extends UiPart {
     public void configure(String saveLocation) {
         addMainPane();
         addSyncStatus();
-        setSyncStatus("Not updated yet in this session");
+        setSyncStatus(getCurrentLocalDateTime());
         addSaveLocation();
         setSaveLocation("./" + saveLocation);
         registerAsAnEventHandler(this);
     }
 
-    private void addMainPane() {
+    private String getCurrentLocalDateTime() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+		LocalDateTime dateTime = LocalDateTime.now();
+		String formattedDateTime = dateTime.format(formatter);
+		return formattedDateTime;
+	}
+
+	private void addMainPane() {
         FxViewUtil.applyAnchorBoundaryParameters(mainPane, 0.0, 0.0, 0.0, 0.0);
         placeHolder.getChildren().add(mainPane);
     }
