@@ -19,9 +19,6 @@ public class AddCommandTest extends TaskTrackerGuiTest {
     public void add() {
 //        //add one task
         TestTask[] currentList = td.getTypicalTasks();
-//        TestTask taskToAdd = td.event2;
-//        assertAddSuccess(taskToAdd, currentList);
-//        currentList = TestUtil.addTasksToList(currentList, taskToAdd);
 
 //        //add another task
         TestTask taskToAdd = TypicalTestTasks.floating3;

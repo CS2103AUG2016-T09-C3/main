@@ -20,7 +20,8 @@ public class DeleteCommand extends Command {
 
 
     public static final String MESSAGE_DELETE_TASK_SUCCESS = "Deleted Task: ";
-
+    public static final String MESSAGE_DELETE_TASK_INVALID = "The task index provided is invalid";
+    public static final String MESSAGE_DELETE_NO_TASK = "Task does not exist in Task-Tracker";
     
     private int taskIndex;
 
@@ -38,9 +39,9 @@ public class DeleteCommand extends Command {
             return new CommandResult(String.format(MESSAGE_DELETE_TASK_SUCCESS + (taskIndex+1) + "", taskIndex));
 
         } catch (IndexOutOfBoundsException ie) {
-            return new CommandResult("The task index provided is invalid");
+            return new CommandResult(MESSAGE_DELETE_TASK_INVALID);
         } catch (TaskNotFoundException pnfe) {
-            return new CommandResult("Task does not exist in task-tracker");
+            return new CommandResult(MESSAGE_DELETE_NO_TASK);
         }
     }
 }
