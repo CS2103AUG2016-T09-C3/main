@@ -30,6 +30,7 @@ import com.google.common.eventbus.Subscribe;
  */
 public class StatusBarFooter extends UiPart {
     private static final Logger logger = LogsCenter.getLogger(StatusBarFooter.class);
+    private static StatusBarFooter statusBarFooter;
     private StatusBar syncStatus;
     private StatusBar saveLocationStatus;
 
@@ -44,9 +45,11 @@ public class StatusBarFooter extends UiPart {
     private AnchorPane placeHolder;
 
     private static final String FXML = "StatusBarFooter.fxml";
+    
+    private static String saveLocation;
 
     public static StatusBarFooter load(Stage stage, AnchorPane placeHolder, String saveLocation) {
-        StatusBarFooter statusBarFooter = UiPartLoader.loadUiPart(stage, placeHolder, new StatusBarFooter());
+        statusBarFooter = UiPartLoader.loadUiPart(stage, placeHolder, new StatusBarFooter());
         statusBarFooter.configure(saveLocation);
         return statusBarFooter;
     }
@@ -73,13 +76,27 @@ public class StatusBarFooter extends UiPart {
     }
 
     private void setSaveLocation(String location) {
-        this.saveLocationStatus.setText(location);
+        this.saveLocation = location;
+        String tidyPath = tidyNewSavePath(location);
+        this.saveLocationStatus.setText(tidyPath);
     }
-
+    
+    private String tidyNewSavePath(String command) {
+        command = command.replaceAll("storage", "");
+        command = command.trim();
+        return command;
+         
+     }
+    
+    public static void updateSaveLocation(String newSaveLocation){
+        statusBarFooter.setSaveLocation(newSaveLocation);
+    }
+    
     private void addSaveLocation() {
         this.saveLocationStatus = new StatusBar();
         FxViewUtil.applyAnchorBoundaryParameters(saveLocationStatus, 0.0, 0.0, 0.0, 0.0);
         saveLocStatusBarPane.getChildren().add(saveLocationStatus);
+        saveLocStatusBarPane.setMinWidth(150);
     }
 
     private void setSyncStatus(String status) {

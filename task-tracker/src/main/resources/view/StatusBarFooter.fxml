@@ -12,7 +12,7 @@
 </columnConstraints>
  <children>
       <AnchorPane id="syncStatusBarPane" fx:id="syncStatusBarPane" maxHeight="1.7976931348623157E308" minWidth="0.0" styleClass="anchor-pane" />
-      <AnchorPane id="saveLocStatusBarPane" fx:id="saveLocStatusBarPane" maxHeight="1.7976931348623157E308" minWidth="0.0" GridPane.columnIndex="1" />
+      <AnchorPane id="saveLocStatusBarPane" fx:id="saveLocStatusBarPane" maxHeight="1.7976931348623157E308" minWidth="90.0" GridPane.columnIndex="1" />
  </children>
    <rowConstraints>
       <RowConstraints />

@@ -117,8 +117,6 @@ public class MainWindow extends UiPart {
 
 		MainWindow mainWindow = UiPartLoader.loadUiPart(primaryStage, new MainWindow());
 		mainWindow.configure(config.getAppTitle(), config.getTaskTrackerName(), config, prefs, logic);
-//		primaryStage.initStyle(StageStyle.TRANSPARENT);
-		primaryStage.setAlwaysOnTop(true);
 		return mainWindow;
 	}
 

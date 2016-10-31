@@ -38,7 +38,8 @@ public static final String COMMAND_WORD = "edit";
 	@Override
 	public CommandResult execute() {
 		try {
-			model.editTask(editNum, newTask);
+		    model.deleteTask(editNum);
+			model.addTask(newTask);
 			return new CommandResult(String.format(MESSAGE_SUCCESS, newTask));
 		}catch (TaskNotFoundException e){
             return new CommandResult("Task does not exist in task-tracker");
