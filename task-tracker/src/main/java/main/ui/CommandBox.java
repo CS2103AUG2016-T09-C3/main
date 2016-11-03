@@ -15,6 +15,7 @@ import main.commons.events.ui.AutoCompleteEvent;
 import main.commons.events.ui.IncorrectCommandAttemptedEvent;
 import main.commons.events.ui.KeyPressEvent;
 import main.commons.events.ui.TabPressEvent;
+import main.commons.events.ui.updateListStatisticsPictureEvent;
 import main.commons.util.FxViewUtil;
 import main.logic.Logic;
 import main.logic.command.CommandResult;
@@ -105,7 +106,7 @@ public class CommandBox extends UiPart {
         setStyleToIndicateCorrectCommand();
         mostRecentResult = logic.execute(previousCommandTest);
         String resultMessage = mostRecentResult.feedbackToUser;
-        ListStatistics.updateAll(resultMessage);
+        ListStatistics.updateStatistics();
         CommandBox.resetHistoryPointer();
         
         if (saveLocationIsChanged(previousCommandTest, resultMessage)){
@@ -223,6 +224,11 @@ public class CommandBox extends UiPart {
     @Subscribe
     public void handleAutoComplete(AutoCompleteEvent event) {
         commandTextField.replaceText(event.getStart(), event.getEnd(), event.getSuggestion());
+    }
+    // @@author A0139422J
+    @Subscribe
+    public void handleUpdateListStatisticsPicture(updateListStatisticsPictureEvent event){
+    	ListStatistics.updateListImage(event.getImageFilePath());
     }
 
 }

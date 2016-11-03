@@ -12,13 +12,13 @@ public class updateListStatisticsPictureEvent extends BaseEvent{
     
     private String parameter;
     private static final Map<String, String> linkToFilePath = ImmutableMap.<String, String>builder()
-            .put(PriorityType.HIGH.name(), "/images/statistics.png")
-            .put(PriorityType.NORMAL.name(), "/images/statistics.png")
-            .put(PriorityType.LOW.name(), "/images/statistics.png")
+            .put(PriorityType.HIGH.name(), "/images/high.png")
+            .put(PriorityType.NORMAL.name(), "/images/normal.png")
+            .put(PriorityType.LOW.name(), "/images/low.png")
             .put(TaskType.DEADLINE.name(), "/images/deadlines.png")
             .put(TaskType.EVENT.name(), "/images/events.png")
             .put(TaskType.FLOATING.name(), "/images/floating.png")
-            .put("date", "/images/clock.png")            
+            .put("date", "/images/calendar.png")            
             .put("list", "/images/statistics.png")
             .build();
     
