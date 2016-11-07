@@ -5,7 +5,7 @@ import main.commons.events.BaseEvent;
 import main.model.ReadOnlyTaskTracker;
 
 public class LoadTaskTrackerEvent extends BaseEvent{
-    ReadOnlyTaskTracker taskTracker;
+    private ReadOnlyTaskTracker taskTracker;
     
     public LoadTaskTrackerEvent(ReadOnlyTaskTracker taskTracker) {
         this.taskTracker = taskTracker;

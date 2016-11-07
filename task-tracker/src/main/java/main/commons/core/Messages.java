@@ -13,7 +13,7 @@ public class Messages {
 
     //@@author A0144132W
     public static final String MESSAGE_EMPTY_DESCRIPTION = "Task description must be provided \n %1$s ";
-    public static final String MESSAGE_MULTIPLE_PRIORITY = "Task can only have 1 priority level \n %1$s ";
+    public static final String MESSAGE_MULTIPLE_PRIORITY = "Task can only have 1 priority level \n";
     public static final String MESSAGE_INVALID_PARAMETERS = "Invalid %1$s parameters! \n %2$s";
     public static final String MESSAGE_INVALID_INDEX = "Invalid index. Index starts from 1! \n %1$s ";
     

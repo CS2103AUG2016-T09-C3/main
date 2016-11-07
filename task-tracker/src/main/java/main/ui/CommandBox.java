@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import main.commons.events.storage.FilePathChangedEvent;
 import main.commons.events.ui.AutoCompleteEvent;
 import main.commons.events.ui.IncorrectCommandAttemptedEvent;
 import main.commons.events.ui.KeyPressEvent;
@@ -95,18 +96,8 @@ public class CommandBox extends UiPart {
 		ListStatistics.updateStatistics();
 		CommandBox.resetHistoryPointer();
 
-		if (saveLocationIsChanged(previousCommandTest, resultMessage)) {
-			StatusBarFooter.updateSaveLocation(previousCommandTest);
-		}
-
 		resultDisplay.postMessage(resultMessage);
 		logger.info("Result: " + resultMessage);
-	}
-
-	private boolean saveLocationIsChanged(String command, String resultMessage) {
-		return ((command.contains("storage"))
-				&& (!resultMessage.contains("XML file not found at the specified location."))
-				&& (!command.contains("invalid")));
 	}
 
 	private static void resetHistoryPointer() {
@@ -187,15 +178,24 @@ public class CommandBox extends UiPart {
 		return commandHistory;
 	}
 
-	// @@author A0144132W
+	// @@author A0144132W   
+    @Subscribe
+    public void handleFilePathChangedEvent(FilePathChangedEvent event) {
+        StatusBarFooter.updateSaveLocation(event.getFilePath());
+    }
+    
 	@FXML
 	public void handleKeyReleased(KeyEvent event) {
-		if (!event.getCode().isDigitKey() && !event.getCode().isLetterKey() && event.getCode() != KeyCode.BACK_SPACE
-				&& event.getCode() != KeyCode.DELETE)
+		if (!keysThatChangeCommandInput(event))
 			return;
 		String input = commandTextField.getText();
-		EventsCenter.getInstance().post(new KeyPressEvent(event.getCode(), input));
+		EventsCenter.getInstance().post(new KeyPressEvent(input));
 	}
+
+    private boolean keysThatChangeCommandInput(KeyEvent event) {
+        return event.getCode().isDigitKey() || event.getCode().isLetterKey() || event.getCode() == KeyCode.BACK_SPACE
+				|| event.getCode() == KeyCode.DELETE;
+    }
 
 	public void handleTabEvent() {
 		commandTextField.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {

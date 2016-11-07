@@ -25,7 +25,7 @@ public class LogicManager extends ComponentManager implements Logic {
     private final MainParser parser;
     private final AutoComplete autoComplete;
 
-    public LogicManager(Model model, Storage storage) {
+    public LogicManager(Model model) {
         this.model = model;
         this.parser = new MainParser();
         this.autoComplete = new AutoComplete(model);

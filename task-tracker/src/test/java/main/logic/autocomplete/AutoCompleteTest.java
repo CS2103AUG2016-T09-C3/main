@@ -14,6 +14,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import main.logic.Logic;
+import main.logic.command.DeleteCommand;
+import main.logic.command.DoneCommand;
+import main.logic.command.EditCommand;
 import main.logic.parser.ReferenceList;
 import main.model.Model;
 import main.model.ModelManager;
@@ -35,6 +38,40 @@ public class AutoCompleteTest {
         TaskTracker taskTracker = typical.getTypicalTaskTracker();
         model = new ModelManager(taskTracker, new UserPrefs());
         autoComplete = new AutoComplete(model);
+    }
+    
+    /*
+     * confirms shown list and suggestions are correct
+     */
+    private void assertListAndSuggestionsBehavior(List<String> expectedSuggestions, List<? extends ReadOnlyTask> shownList) {
+        assertEquals(shownList, model.getFilteredTaskList());
+        assertEquals(expectedSuggestions, autoComplete.getSuggestions());
+
+    }
+    
+    /*
+     * update suggestions for each of the edit, done and delete commands, and confirms 
+     * the shown list and suggestions are correct.
+     */
+    private void assertEditDoneDeleteCommands(String input, List<String> expectedSuggestions, List<? extends ReadOnlyTask> shownList) {
+        autoComplete.updateSuggestions(EditCommand.COMMAND_WORD + " " + input);
+        assertListAndSuggestionsBehavior(expectedSuggestions, shownList);
+
+        autoComplete.updateSuggestions(DoneCommand.COMMAND_WORD + " " + input);
+        assertListAndSuggestionsBehavior(expectedSuggestions, shownList);
+
+        autoComplete.updateSuggestions(DeleteCommand.COMMAND_WORD + " " + input);
+        assertListAndSuggestionsBehavior(expectedSuggestions, shownList);
+    }
+    
+    /*
+     * processes the given set and put objects that starts with the given input 
+     * into a sorted list.
+     * 
+     *  @returns the sorted list where all objects in it matches the input.
+     */
+    private List<String> setToSortedListMatchingInput(Set<String> set, String input) {
+        return set.stream().filter(k -> k.substring(0,input.length()).equals(input)).sorted((k1, k2) -> k1.compareTo(k2)).collect(Collectors.toList());
     }
     
     @Test
@@ -92,37 +129,29 @@ public class AutoCompleteTest {
     
     @Test
     public void updateSuggestions_editDoneDelete_lowerCaseMatchFirstToken() {
-        autoComplete.updateSuggestions("delete clea");
-        assertEquals(Collections.singletonList("1"), autoComplete.getSuggestions());
-        assertListBehavior(Arrays.asList(new Task(TypicalTestTasks.floating1)));
+        assertEditDoneDeleteCommands("clea", Arrays.asList("1"), Arrays.asList(new Task(TypicalTestTasks.floating1)));
     }
     
     @Test
     public void updateSuggestions_editDoneDelete_lowerCaseMatchMiddleToken() {
-        autoComplete.updateSuggestions("done with");
-        assertEquals(Collections.singletonList("1"), autoComplete.getSuggestions());
-        assertListBehavior(Arrays.asList(new Task(TypicalTestTasks.event1)));
+        assertEditDoneDeleteCommands("with", Arrays.asList("1"), Arrays.asList(new Task(TypicalTestTasks.event1)));
     }
     
     @Test
     public void updateSuggestions_editDoneDelete_lowerCaseMatchMultiple() {
-        autoComplete.updateSuggestions("delete clea with");
-        assertEquals(Arrays.asList("1", "2"), autoComplete.getSuggestions());
-        assertListBehavior(Arrays.asList(new Task(TypicalTestTasks.event1), new Task(TypicalTestTasks.floating1)));
+        assertEditDoneDeleteCommands("clea with", Arrays.asList("1", "2"), Arrays.asList(new Task(TypicalTestTasks.event1), new Task(TypicalTestTasks.floating1)));
     }
     
     @Test
     public void updateSuggestions_find_lowerCaseMatchOne() {
         autoComplete.updateSuggestions("find clea ");
-        assertEquals(Arrays.asList("1"), autoComplete.getSuggestions());
-        assertListBehavior(Arrays.asList(new Task(TypicalTestTasks.floating1)));
+        assertListAndSuggestionsBehavior(Arrays.asList("1"), Arrays.asList(new Task(TypicalTestTasks.floating1)));
     }
     
     @Test
     public void updateSuggestions_find_upperCaseMatchOne() {
         autoComplete.updateSuggestions("find CLEA ");
-        assertEquals(Arrays.asList("1"), autoComplete.getSuggestions());
-        assertListBehavior(Arrays.asList(new Task(TypicalTestTasks.floating1)));
+        assertListAndSuggestionsBehavior(Arrays.asList("1"), Arrays.asList(new Task(TypicalTestTasks.floating1)));
     }
     
     @Test
@@ -142,14 +171,5 @@ public class AutoCompleteTest {
         autoComplete.updateSuggestions("sort DA");
         assertEquals(Arrays.asList("date"), autoComplete.getSuggestions());
     }    
-    
-    private List<String> setToSortedListMatchingInput(Set<String> set, String input) {
-        return set.stream().filter(k -> k.substring(0,input.length()).equals(input)).sorted((k1, k2) -> k1.compareTo(k2)).collect(Collectors.toList());
-    }
-    
-
-    private void assertListBehavior(List<? extends ReadOnlyTask> shownList) {
-        assertEquals(shownList, model.getFilteredTaskList());
-    }
 
 }

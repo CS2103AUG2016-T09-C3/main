@@ -6,10 +6,10 @@ import main.commons.events.BaseEvent;
 public class AutoCompleteEvent extends BaseEvent{
     
     // the start and end index of the input to be replaced
-    int start;
-    int end;
+    private int start;
+    private int end;
     
-    String suggestion;
+    private String suggestion;
     
     public AutoCompleteEvent(int start, int end, String suggestion) {
         this.suggestion = suggestion;

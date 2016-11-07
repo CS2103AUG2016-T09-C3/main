@@ -29,10 +29,10 @@ public class ListCommand extends Command {
         isDefault = true;
     }
       
-    public ListCommand(Triple<PriorityType, Date, TaskType> parameters, boolean isDone, boolean onlyOverdue) {
-        priority = parameters.getLeft();
-        date = parameters.getMiddle();
-        type = parameters.getRight();
+    public ListCommand(PriorityType priority, Date date, TaskType type, boolean isDone, boolean onlyOverdue) {
+        this.priority = priority;
+        this.date = date;
+        this.type = type;
         this.isDone = isDone;
         this.onlyOverdue = onlyOverdue;
     }
@@ -46,6 +46,9 @@ public class ListCommand extends Command {
 	    return new CommandResult(String.format(MESSAGE_SUCCESS, getReadableCriteria()));    
 	}
 	
+	/**
+	 * @returns String which consolidates the list parameters to something readable 
+	 */
 	private String getReadableCriteria() {
 	    StringBuilder readable = new StringBuilder();
 	 

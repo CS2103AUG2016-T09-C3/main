@@ -10,15 +10,16 @@ import main.model.task.UniqueTaskList.TaskNotFoundException;
     
 /**
      *Undoes the previous command. 
-     *Maintains a stack of changes made by last entered command.
-     *Pushes the undo'd command to redo stack.
+     *Maintains a stack of changes made by last entered command
+     *Pushes the undo'd command to redo stack
+     *
  */ 
 public class UndoCommand extends Command {
 
     public static final String COMMAND_WORD = "undo";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Reverts the last known command input.\n" + "eg. "
-            												+ COMMAND_WORD;
+            + COMMAND_WORD;
 
     public static final String MESSAGE_SUCCESS = "Reverted last command. ";
     public static final String MESSAGE_EMPTY_HISTORY = "There are no more inputs before this.";

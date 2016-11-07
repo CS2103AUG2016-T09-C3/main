@@ -104,6 +104,12 @@ public class StorageManager extends ComponentManager implements Storage {
         taskTrackerStorage.setTaskTrackerFilePath(filepath);
     }
     
+    /*
+     * responds to FilePathChangedEvent.
+     * 
+     * If the new file path has original data, this data is loaded. Else, data will be
+     * saved to the new file path. 
+     */
     @Override
     @Subscribe
     public void handleFilePathChangedEvent(FilePathChangedEvent event) {
@@ -114,7 +120,13 @@ public class StorageManager extends ComponentManager implements Storage {
         
         setTaskTrackerFilePath(filePath);
 
-        saveTaskTracker(filePath, taskTracker);  
+        ReadOnlyTaskTracker originalData = originalData();
+        if (originalData != null) {
+            taskTracker = originalData;
+        }
+        else {
+            saveTaskTracker(filePath, taskTracker);  
+        }
         
         logger.info(taskTracker.getTaskList().size() + "");
         saveConfig(filePath);
@@ -139,7 +151,7 @@ public class StorageManager extends ComponentManager implements Storage {
         }        
     }
     
-    private ReadOnlyTaskTracker originalData(String filePath) {
+    private ReadOnlyTaskTracker originalData() {
         Optional<ReadOnlyTaskTracker> taskTrackerOptional;
 
         try {

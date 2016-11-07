@@ -6,15 +6,15 @@ import main.model.filter.SortCriteria;
 
 public class ChangeSortFilterEvent extends BaseEvent {
 
-    SortCriteria filter;
+    private SortCriteria filter;
     
     public ChangeSortFilterEvent(String param) {
-        assert param.equals("date") || param.equals("name");
+        assert "date".equals(param) || "name".equals(param);
         matchToFilter(param);
     }
 
     private void matchToFilter(String param) {
-        if (param.equals("date")) {
+        if ("date".equals(param)) {
             filter = SortCriteria.TIME;
         }
         else {

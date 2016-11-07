@@ -17,9 +17,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableList.Builder;
-
 import main.model.task.PriorityType;
 import main.model.task.Task;
 import main.model.task.TaskType;
@@ -45,29 +42,35 @@ public class MainParser {
     private static final Pattern EDIT_FORMAT = Pattern.compile("(?<index>\\d)(?<task>.*)");
     private static final Logger logger = LogsCenter.getLogger(MainParser.class);
 
-       
     public MainParser() {}
     
+    /***
+     * parses the given input
+     * 
+     * @returns a Command object to be executed.
+     */
     public Command parse(String input){
-        
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(input.trim());
         
         if (!matcher.matches()) {
-            return commandIncorrect(Messages.MESSAGE_INVALID_COMMAND_FORMAT);
+            return commandIncorrectPlusHelp(Messages.MESSAGE_INVALID_COMMAND_FORMAT);
         }
         String commandWord = matcher.group("commandWord");
         String task = matcher.group("task");
         
         logger.fine("command word: " + commandWord);
-
         if (!ReferenceList.commandsDictionary.containsKey(commandWord.toLowerCase())) {
-            return commandIncorrect(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, Messages.MESSAGE_UNKNOWN_COMMAND));
+            return commandIncorrectPlusHelp(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, Messages.MESSAGE_UNKNOWN_COMMAND));
         }
 
         return getCommand(input, commandWord, task);
-           
     }
 
+    /***
+     * Calls the appropriate prepare function according to the commandWord given.
+     * 
+     * @returns a Command object
+     */
     private Command getCommand(String input, String commandWord, String task) {
         switch (ReferenceList.commandsDictionary.get(commandWord.toLowerCase())) {
             case AddCommand.COMMAND_WORD:
@@ -97,19 +100,19 @@ public class MainParser {
             case SortCommand.COMMAND_WORD:
                 return prepareSort(task);
             default: 
-                return commandIncorrect(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, Messages.MESSAGE_UNKNOWN_COMMAND));
+                return commandIncorrectPlusHelp(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, Messages.MESSAGE_UNKNOWN_COMMAND));
         }
     }
 
-    private Command commandIncorrect(String message) {
+    /**
+     * @returns an IncorrectCommand object with help message
+     */
+    private Command commandIncorrectPlusHelp(String message) {
         return new IncorrectCommand(String.format(message, HelpCommand.MESSAGE_USAGE));
     }
     
-    /*
-     * checks whether task has a deadline, is an event, or is floating,
-     * and uses the appropriate constructors accordingly.
-     * 
-     * @return an AddCommand Object
+    /**
+     * Extracts task to be added from the given input 
      */    
     public Command prepareAdd(String task) {
         try {
@@ -122,6 +125,11 @@ public class MainParser {
         }                      
     }     
     
+    /**
+     * Extracts relevant parameters for the EditCommamd, consisting of the index to be
+     * replaced and Task to take its place. Appropriate IncorrectCommand when input
+     * is invalid.
+     */
     public Command prepareEdit(String input) {
         final Matcher edit_matcher = EDIT_FORMAT.matcher(input.trim());
         
@@ -149,6 +157,10 @@ public class MainParser {
         }  
     }
     
+    /**
+     * Extracts relevant parameters for the DeleteCommamd, and returns appropriate
+     * IncorrectCommand when input is invalid
+     */
     public Command prepareDelete(String input) {
         int index;
         
@@ -163,7 +175,10 @@ public class MainParser {
         return new DeleteCommand(index);
     }
 
-    
+    /**
+     * Extracts relevant parameters for the DoneCommamd, and returns appropriate
+     * IncorrectCommand when input is invalid
+     */
     public Command prepareDone(String input) {
         int index;
         
@@ -178,9 +193,15 @@ public class MainParser {
         return new DoneCommand(index);
     }
 
+    /**
+     * Extracts a valid index from the given input. 
+     *
+     * @throws IllegalValueException when input is empty, or index derived is less than 0
+     * @throws NumberFormatException if input given cannot be parsed as an integer.
+     */
     private int extractValidIndex(String input) throws IllegalValueException, NumberFormatException{
-        if (input.trim() == "")  {
-            throw new IllegalValueException(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX); 
+        if (input.trim().equals(""))  {
+            throw new IllegalValueException(Messages.MESSAGE_INVALID_COMMAND_FORMAT); 
         }
         
         int index = Integer.valueOf(input.trim()) - 1;
@@ -214,8 +235,16 @@ public class MainParser {
     }
     
     //@@author A0144132W
+    /**
+     * Extracts list parameters from the given input.
+     * 
+     * @returns appropriate ListCommand or IncorrectCommand if input is invalid.
+     */
     public Command prepareList(String input) {
-        if (input.trim().equals("")) return new ListCommand();
+        if (input.trim().equals("")) {
+            defaultListPicture();
+            return new ListCommand();
+        }
         
         Triple<String, List<Date>, List<Boolean>> info = TimeParser.extractTime(input.trim());
 
@@ -247,11 +276,20 @@ public class MainParser {
         Date date;
         date = getDate(dates);
 
-        indicateListParamsChanged(Triple.of(priority, date, type));
-        return new ListCommand(Triple.of(priority, date, type), isDone, onlyOverdue);
+        indicateListParamsChanged(priority, date, type, onlyOverdue);
+        return new ListCommand(priority, date, type, isDone, onlyOverdue);
     }
 
+    /**
+     * Gets the first date if there are more than 1. If there are none, null is returned.
+     * 
+     * for prepareList function
+     * 
+     * @params list of dates given cannot be null
+     */
     private Date getDate(List<Date> dates) {
+        assert dates != null;
+        
         Date date;
         if (dates.size() > 0) {
             date = dates.get(0);
@@ -262,17 +300,31 @@ public class MainParser {
         return date;
     }
     
+    /**
+     * Checks whether the input given matches the 2 sort parameter.
+     * 
+     * @returns SortCommand if input matches
+     * @returns IncorrectCommand if input does not match
+     */
     public Command prepareSort(String input) {
-        input = input.trim().toLowerCase();
+        String trimmed = input.trim().toLowerCase();
         
-        if (input.equals("date") || input.equals("name")) {
-            return new SortCommand(input);
+        if ("date".equals(trimmed) || "name".equals(trimmed)) {
+            return new SortCommand(trimmed);
         }
         else {
             return new IncorrectCommand(String.format(Messages.MESSAGE_INVALID_PARAMETERS, "sort", SortCommand.MESSAGE_USAGE));
         }
     }
 
+    /**
+     * Checks whether task has a deadline, is an event, or is floating,
+     * and uses the appropriate constructors accordingly.
+     * 
+     * @throws MultiplePriorityException if there are multiple priority indicated
+     * @throws IllegalArgumentException if string input is invalid
+     * @returns a Task object extracted from string given
+     */
     private Task extractTask(String raw) throws MultiplePriorityException, IllegalArgumentException {
 
         Pair<PriorityType, String> proc = getPriority(raw.trim());
@@ -304,66 +356,64 @@ public class MainParser {
         }
     }
     
-    /*
-     * uses PriorityType enum class
+    /**
+     * Extracts the priority from the given input. Priority is indicated by the 
+     * PriorityType enum class.
      * 
-     * @return a pair consisting PriorityType and truncated message (without priority indicator)
+     * @throws MultiplePriorityException if multiple priority is detected.
+     * @returns a pair consisting PriorityType and truncated message (without 
+     * priority indicator).
      */
     private Pair<PriorityType,String> getPriority(String input) throws MultiplePriorityException{
         String [] levels = {"-h", "-m", "-l" };
-        int priority = 0;
+        String [] enum_array = {"HIGH", "NORMAL", "LOW"};
+        PriorityType priority = null;
         int index = input.length();
         int find;
         
         for (int i = 0; i < levels.length; i++) {
             if ((find = argumentIndexInString(input,levels[i])) != -1) {
-                if (priority != 0) {
+                if (priority != null) {
                     throw new MultiplePriorityException();
                 }
-                priority = i+1;
+                priority = PriorityType.valueOf(enum_array[i]);
                 index = find;
             }
         }
 
-        if (priority == 0) {
-            priority = 2;
+        if (priority == null) {
+            priority = PriorityType.NORMAL;
         }
         
-        PriorityType priority_enum;
+        String truncate = input.substring(0, index);
         
-        if (priority == 1) {
-            priority_enum = PriorityType.HIGH;
-        }
-        else if (priority == 2) {
-            priority_enum = PriorityType.NORMAL;
-        }
-        else {
-            priority_enum = PriorityType.LOW;
-        }
-        
-        input = input.substring(0, index);
-        
-        return Pair.of(priority_enum,input);
+        return Pair.of(priority, truncate);
     }
     
+    /**
+     * @returns the last index at which arg given appears in str given
+     */
     private int argumentIndexInString(String str, String arg) {
         return (str.toLowerCase().lastIndexOf(arg.toLowerCase()));
     }
     
-    /*
-     * processes the list parameters and chooses one to be shown in the list statistics
+    /**
+     * Processes the list parameters and chooses one to be shown in the list statistics
      * by posting an event
      */
-    private void indicateListParamsChanged(Triple<PriorityType, Date, TaskType> params) {
+    private void indicateListParamsChanged(PriorityType priority, Date date, TaskType type, boolean onlyOverdue) {
         String paramToShow = "";
-        if (params.getLeft() != null) {
-            paramToShow = params.getLeft().name();
+        if (onlyOverdue) {
+            paramToShow = "overdue";
         }
-        else if (params.getMiddle() != null) {
+        else if (priority != null) {
+            paramToShow = priority.name();
+        }
+        else if (date != null) {
             paramToShow = "date";
         }
-        else if (params.getRight() != null) {
-            paramToShow = params.getRight().name();
+        else if (type != null) {
+            paramToShow = type.name();
         }
         else {
             paramToShow = "list";
@@ -371,5 +421,13 @@ public class MainParser {
             
         EventsCenter.getInstance().post(new updateListStatisticsPictureEvent(paramToShow));
     }
+    
+    /**
+     * Changes the ListStatistics picture to the default one
+     */
+    private void defaultListPicture() {
+        indicateListParamsChanged(null, null, null, false);
+    }
+
     
 }

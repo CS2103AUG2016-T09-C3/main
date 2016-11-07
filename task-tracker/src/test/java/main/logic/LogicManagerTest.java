@@ -13,7 +13,9 @@ import main.logic.command.DoneCommand;
 import main.logic.command.EditCommand;
 import main.logic.command.HelpCommand;
 import main.logic.command.ListCommand;
+import main.logic.command.RedoCommand;
 import main.logic.command.SortCommand;
+import main.logic.command.UndoCommand;
 import main.logic.command.ExitCommand;
 import main.logic.command.ClearCommand;
 import main.model.Model;
@@ -26,8 +28,6 @@ import main.model.task.ReadOnlyTask;
 import main.model.task.Task;
 import main.model.task.TaskType;
 import main.model.task.UniqueTaskList.DuplicateTaskException;
-import main.storage.StorageManager;
-
 import static main.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static main.commons.core.Messages.MESSAGE_INVALID_INDEX;
 import static org.junit.Assert.assertEquals;
@@ -41,16 +41,11 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.junit.*;
-import org.junit.rules.TemporaryFolder;
-
 import com.google.common.eventbus.Subscribe;
 
 
 public class LogicManagerTest {
     
-    @Rule
-    public TemporaryFolder saveFolder = new TemporaryFolder();
-        
     private Model model;
     private Logic logic;
 
@@ -70,11 +65,9 @@ public class LogicManagerTest {
 
     
     @Before
-    public void setup() {
+    public void setUp() {
         model = new ModelManager();
-        String tempTaskTrackerFile = saveFolder.getRoot().getPath() + "TempTaskTracker.xml";
-        String tempPreferencesFile = saveFolder.getRoot().getPath() + "TempPreferences.json";
-        logic = new LogicManager(model, new StorageManager(tempTaskTrackerFile, tempPreferencesFile));
+        logic = new LogicManager(model);
 
         EventsCenter.getInstance().registerHandler(this);
 
@@ -85,7 +78,7 @@ public class LogicManagerTest {
     @After
     public void teardown() {
         EventsCenter.clearSubscribers();
-}
+    }
     
     private void assertCommandBehavior(String inputCommand, String expectedMessage) throws Exception {
         assertCommandBehavior(inputCommand, expectedMessage, new TaskTracker(), Collections.emptyList());
@@ -107,6 +100,10 @@ public class LogicManagerTest {
         //Execute the command
         CommandResult result = logic.execute(inputCommand);     
 
+        if (inputCommand.equals("redo") || inputCommand.equals("undo")) {
+            model.updateFilteredListToShowAllPending();
+        }
+
         //Confirm the ui display elements should contain the right data
         assertEquals(expectedMessage, result.feedbackToUser);
         assertEquals(expectedShownList, model.getFilteredTaskList());
@@ -121,8 +118,16 @@ public class LogicManagerTest {
         assertCommandBehavior(commandWord , String.format(MESSAGE_INVALID_COMMAND_FORMAT, expectedMessage)); //index missing
         assertCommandBehavior(commandWord + " 0", String.format(MESSAGE_INVALID_INDEX, expectedMessage)); //index cannot be 0
         assertCommandBehavior(commandWord + " not_a_number", String.format(MESSAGE_INVALID_COMMAND_FORMAT, expectedMessage));
-}
-
+    }
+    
+    private void assertUndoRedoBehavior(TaskTracker expectedTaskTrackerUndo,
+                                        TaskTracker expectedTaskTrackerRedo,
+                                        List<? extends ReadOnlyTask> expectedShownListUndo,
+                                        List<? extends ReadOnlyTask> expectedShownListRedo) throws Exception {
+        assertCommandBehavior("undo", UndoCommand.MESSAGE_SUCCESS, expectedTaskTrackerUndo, expectedShownListUndo);
+        assertCommandBehavior("redo", RedoCommand.MESSAGE_SUCCESS, expectedTaskTrackerRedo, expectedShownListRedo);
+    }
+    
     @Test
     public void execute_unknownCommandWord() throws Exception {
         String unknownCommand = "uicfhmowqewca";
@@ -149,9 +154,7 @@ public class LogicManagerTest {
     @Test
     public void execute_clear() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        model.addTask(helper.generateTask(1));
-        model.addTask(helper.generateTask(2));
-        model.addTask(helper.generateTask(3));
+        helper.replaceModel(model, 3);
 
         assertCommandBehavior("clear", ClearCommand.MESSAGE_SUCCESS, new TaskTracker(), Collections.emptyList());
     }
@@ -203,13 +206,19 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_add_empty_description_invalidArgsFormat_errorMessageShown() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, Messages.MESSAGE_EMPTY_DESCRIPTION);
+    public void execute_add_emptyDescription_invalidArgsFormat_errorMessageShown() throws Exception {
+        String expectedMessage = String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, Messages.MESSAGE_EMPTY_DESCRIPTION);
         assertCommandBehavior("add ", expectedMessage);
     }
     
     @Test
-    public void execute_add_floating_successful() throws Exception {
+    public void execute_add_multiplePriority_invalidArgsFormat_errorMessageShown() throws Exception {
+        String expectedMessage = String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, Messages.MESSAGE_MULTIPLE_PRIORITY);
+        assertCommandBehavior("add something -h -l", expectedMessage);
+    }
+    
+    @Test
+    public void execute_addFloating_successful() throws Exception {
           
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.floating1();
@@ -219,9 +228,10 @@ public class LogicManagerTest {
                 String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded),
                 expectedTT,
                 expectedTT.getTaskList());
-    }   
+    }
+    
     @Test
-    public void execute_add_duplicate_notAllowed() throws Exception {
+    public void execute_addDuplicate_notAllowed() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.floating1();
@@ -237,22 +247,8 @@ public class LogicManagerTest {
     
     }         
       
-      
     @Test
-    public void execute_add_deadline_natural_date_successful() throws Exception {
-        TestDataHelper helper = new TestDataHelper();
-        Task toBeAdded = helper.deadline_natural_tmr_inferred();
-        TaskTracker expectedTT = helper.addToTaskTracker(toBeAdded);
-          
-        assertCommandBehavior(("add " + toBeAdded.getMessage() + " tmr"),
-                String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded),
-                expectedTT,
-                expectedTT.getTaskList());          
-    }
-      
-     
-    @Test
-    public void execute_add_deadline_successful() throws Exception {
+    public void execute_addDeadline_successful() throws Exception {
           
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.deadline1();
@@ -265,7 +261,7 @@ public class LogicManagerTest {
     }
       
     @Test
-    public void execute_add_event_successful() throws Exception {
+    public void execute_addEvent_successful() throws Exception {
           
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.event1();
@@ -286,7 +282,7 @@ public class LogicManagerTest {
         expectedModel.updateFilteredListToShowAllPending();
         
         // prepare task tracker state
-        helper.addToModel(model, 2);
+        helper.replaceModel(model, 2);
           
         assertCommandBehavior("list",
                 String.format(ListCommand.MESSAGE_SUCCESS, "pending tasks"),
@@ -303,7 +299,7 @@ public class LogicManagerTest {
         expectedModel.updateFilteredListToShowAllDone();
 
         // prepare task tracker state
-        helper.addToModel(model, 2, Collections.singletonList(helper.done_task()));
+        helper.replaceModel(model, 2, Collections.singletonList(helper.done_task()));
         
         assertCommandBehavior("list done", 
                 String.format(ListCommand.MESSAGE_SUCCESS, "completed tasks"), 
@@ -319,7 +315,7 @@ public class LogicManagerTest {
         expectedModel.updateFilteredTaskList(Triple.of(PriorityType.HIGH, null, null), false, false);
 
         // prepare task tracker state
-        helper.addToModel(model, 2, Collections.singletonList(helper.floating_high_priority()));
+        helper.replaceModel(model, 2, Collections.singletonList(helper.floating_high_priority()));
 
         assertCommandBehavior("list high", 
                 String.format(ListCommand.MESSAGE_SUCCESS, "pending high priority tasks"), 
@@ -335,12 +331,60 @@ public class LogicManagerTest {
         expectedModel.updateFilteredTaskList(Triple.of(PriorityType.LOW, null, TaskType.DEADLINE), false, false);
 
         // prepare task tracker state
-        helper.addToModel(model, 2, Collections.singletonList(helper.deadline_low_priority()));
+        helper.replaceModel(model, 2, Collections.singletonList(helper.deadline_low_priority()));
 
         assertCommandBehavior("list low deadline", 
                 String.format(ListCommand.MESSAGE_SUCCESS, "pending low priority tasks with deadlines"), 
                 expectedTT,
                 expectedModel.getFilteredTaskList());
+    }
+    
+    @Test
+    public void execute_undoRedoAdd_success() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        TaskTracker expectedTT_undo = helper.generateTaskTracker(1);
+        TaskTracker expectedTT_redo = helper.generateTaskTracker(2);
+
+        helper.replaceModel(model, Arrays.asList());
+        helper.addToModel(model, 2);
+        
+        assertUndoRedoBehavior(expectedTT_undo, expectedTT_redo, expectedTT_undo.getTaskList(), expectedTT_redo.getTaskList());
+    }
+    
+    @Test
+    public void execute_undoRedoDelete_success() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        TaskTracker expectedTT_undo = helper.generateTaskTracker(3);
+        TaskTracker expectedTT_redo = helper.generateTaskTracker(2);
+        helper.replaceModel(model, 3);
+        model.deleteTask(2);
+        
+        assertUndoRedoBehavior(expectedTT_undo, expectedTT_redo, expectedTT_undo.getTaskList(), expectedTT_redo.getTaskList());
+    }
+    
+    @Test
+    public void execute_undoRedoDone_success() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        TaskTracker expectedTT = helper.generateTaskTracker(3);
+        Model expectedModelRedo = new ModelManager(expectedTT, new UserPrefs());
+        expectedModelRedo.doneTask(2);
+        expectedModelRedo.updateFilteredListToShowAllPending();
+        
+        helper.replaceModel(model, 3);
+        model.doneTask(2);
+        assertUndoRedoBehavior(expectedTT, new TaskTracker(expectedModelRedo.getTaskTracker()), expectedTT.getTaskList(), expectedModelRedo.getFilteredTaskList());
+    }
+    
+    @Test
+    public void execute_undoRedoEdit_success() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        TaskTracker expectedTT = helper.generateTaskTracker(3);
+        Model expectedModelRedo = new ModelManager(expectedTT, new UserPrefs());
+        expectedModelRedo.editTask(2, helper.deadline1());
+        
+        helper.replaceModel(model, 3);
+        model.editTask(2, helper.deadline1());
+        assertUndoRedoBehavior(expectedTT, new TaskTracker(expectedModelRedo.getTaskTracker()), expectedTT.getTaskList(), expectedModelRedo.getFilteredTaskList());
     }
 
     /**
@@ -354,10 +398,6 @@ public class LogicManagerTest {
 
         protected Task floating_high_priority() {
             return new Task("wash dishes", PriorityType.HIGH);
-        }
-        
-        protected Task deadline_natural_tmr_inferred() {
-            return new Task("clean room", DateUtil.getTmr(), PriorityType.NORMAL).setIsInferred(true);
         }
         
         protected Task deadline_low_priority() {
@@ -399,7 +439,7 @@ public class LogicManagerTest {
         /**
          * Generates a TaskTracker with auto-generated tasks.
          */
-        TaskTracker generateTaskTracker(int numGenerated) throws Exception {
+        protected TaskTracker generateTaskTracker(int numGenerated) throws Exception {
             TaskTracker taskTracker = new TaskTracker();
             addToTaskTracker(taskTracker, numGenerated);
             return taskTracker;
@@ -409,7 +449,7 @@ public class LogicManagerTest {
          * Generates a TaskTracker with a number auto-generated tasks given by
          * numGenerated and adds the list of tasks provided to it.
          */
-        TaskTracker generateTaskTracker(int numGenerated, List<Task> tasks) throws Exception {
+        protected TaskTracker generateTaskTracker(int numGenerated, List<Task> tasks) throws Exception {
             TaskTracker taskTracker = new TaskTracker();
             addToTaskTracker(taskTracker, numGenerated);
             addToTaskTracker(taskTracker, tasks);
@@ -419,7 +459,7 @@ public class LogicManagerTest {
         /**
          * Generates a TaskTracker based on the list of Tasks given.
          */
-        TaskTracker generateTaskTracker(List<Task> tasks) throws Exception {
+        protected TaskTracker generateTaskTracker(List<Task> tasks) throws Exception {
             TaskTracker taskTracker = new TaskTracker();
             addToTaskTracker(taskTracker, tasks);
             return taskTracker;
@@ -431,20 +471,20 @@ public class LogicManagerTest {
          * @param taskTracker
          *            The TaskTracker to which the Tasks will be added
          */
-        void addToTaskTracker(TaskTracker taskTracker, int numGenerated) throws Exception {
+        protected void addToTaskTracker(TaskTracker taskTracker, int numGenerated) throws Exception {
             addToTaskTracker(taskTracker, generateTaskList(numGenerated));
         }
 
         /**
          * Adds the given list of Tasks to the given TaskTracker
          */
-        void addToTaskTracker(TaskTracker taskTracker, List<Task> tasksToAdd) throws Exception {
+        protected void addToTaskTracker(TaskTracker taskTracker, List<Task> tasksToAdd) throws Exception {
             for (Task p : tasksToAdd) {
                 taskTracker.addTask(p);
             }
         }
 
-        TaskTracker addToTaskTracker(Task toBeAdded) throws DuplicateTaskException {
+        protected TaskTracker addToTaskTracker(Task toBeAdded) throws DuplicateTaskException {
             TaskTracker expectedTT = new TaskTracker();
             expectedTT.addTask(toBeAdded);
             return expectedTT;
@@ -456,14 +496,14 @@ public class LogicManagerTest {
          * @param model
          *            The model to which the Tasks will be added
          */
-        void addToModel(Model model, int numGenerated) throws Exception {
+        protected void addToModel(Model model, int numGenerated) throws Exception {
             addToModel(model, generateTaskList(numGenerated));
         }
 
         /**
          * Adds the given list of Tasks to the given model
          */
-        void addToModel(Model model, List<Task> tasksToAdd) throws Exception {
+        protected void addToModel(Model model, List<Task> tasksToAdd) throws Exception {
             for (Task p : tasksToAdd) {
                 model.addTask(p);
             }
@@ -473,9 +513,32 @@ public class LogicManagerTest {
          * Adds the given number of auto-generated Task objects and 
          * given list of Tasks to the given model
          */
-        void addToModel(Model model, int numGenerated, List<Task> tasksToAdd) throws Exception {
+        protected void addToModel(Model model, int numGenerated, List<Task> tasksToAdd) throws Exception {
             addToModel(model, numGenerated);
             addToModel(model, tasksToAdd);
+        }
+        
+        /**
+         * Replaces a Model Object with the given number of auto-generated
+         * Task objects
+         */
+        protected void replaceModel(Model model, int numGenerated) throws Exception {
+            model.resetData(generateTaskTracker(numGenerated));
+        }
+        
+        /**
+         * Replaces a Model Object with the given list of Tasks
+         */
+        protected void replaceModel(Model model, List<Task> tasksToAdd) throws Exception {
+            model.resetData(generateTaskTracker(tasksToAdd));
+        }
+        
+        /**
+         * Replaces the Model data with the given number of auto-generated
+         * Task objects and given list of Tasks
+         */
+        protected void replaceModel(Model model, int numGenerated, List<Task> tasksToAdd) throws Exception {
+            model.resetData(generateTaskTracker(numGenerated, tasksToAdd));
         }
         
         /**
@@ -486,14 +549,14 @@ public class LogicManagerTest {
          * @param seed
          *            used to generate the task data field values
          */
-        Task generateTask(int seed) throws Exception {
+        protected Task generateTask(int seed) throws Exception {
             return new Task("Task " + seed, PriorityType.NORMAL);
         }
 
         /**
          * Generates a list of Tasks based on the flags.
          */
-        List<Task> generateTaskList(int numGenerated) throws Exception {
+        protected List<Task> generateTaskList(int numGenerated) throws Exception {
             List<Task> tasks = new ArrayList<>();
             for (int i = 1; i <= numGenerated; i++) {
                 tasks.add(generateTask(i));
@@ -501,7 +564,7 @@ public class LogicManagerTest {
             return tasks;
         }
 
-        List<Task> generateTaskList(Task... tasks) {
+        protected List<Task> generateTaskList(Task... tasks) {
             return Arrays.asList(tasks);
         }
     }

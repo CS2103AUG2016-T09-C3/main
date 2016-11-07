@@ -8,10 +8,10 @@ public class SortFilter {
     
 
     //Sort by comparing deadlines and end date of events
-    Comparator<Task> byTime = (t1, t2) -> t1.compareTime(t2);
+    private Comparator<Task> byTime = (t1, t2) -> t1.compareTime(t2);
 
     //Sort lexicographically, case insensitive
-    Comparator<Task> byName = (t1, t2) -> t1.getMessage().toLowerCase().compareTo(t2.getMessage().toLowerCase());
+    private Comparator<Task> byName = (t1, t2) -> t1.getMessage().toLowerCase().compareTo(t2.getMessage().toLowerCase());
 
     
     private Comparator<Task> sortCriteria;
@@ -21,15 +21,12 @@ public class SortFilter {
         switch (criteria) {
             case TIME:
                 sortCriteria = byTime.thenComparing(byName);
-//                isReversed = false;
                 break;
             case NAME:
                 sortCriteria = byName.thenComparing(byTime); 
-//                isReversed = true; // so appears in the order a-z
                 break;
             default:
                 sortCriteria = byTime.thenComparing(byName);
-//                isReversed = false;
                 break;
         }
     }

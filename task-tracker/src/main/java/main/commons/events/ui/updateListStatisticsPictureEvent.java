@@ -1,3 +1,4 @@
+//@@author A0144132W
 package main.commons.events.ui;
 
 import java.util.Map;
@@ -20,6 +21,7 @@ public class updateListStatisticsPictureEvent extends BaseEvent{
             .put(TaskType.FLOATING.name(), "/images/floating.png")
             .put("date", "/images/calendar.png")            
             .put("list", "/images/statistics.png")
+            .put("overdue", "/images/overdue.png")
             .build();
     
     /*

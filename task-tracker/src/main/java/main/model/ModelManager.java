@@ -10,19 +10,15 @@ import main.commons.core.UnmodifiableObservableList;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
-//import java.util.function.Predicate;
 import java.util.logging.Logger;
-//import java.util.LinkedList;
 
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import main.commons.events.model.ChangeSortFilterEvent;
@@ -32,8 +28,6 @@ import main.commons.events.model.UpdateListWithSuggestionsEvent;
 import main.commons.util.DateUtil;
 
 import main.logic.command.UndoCommand;
-import main.model.ModelManager.Qualifier;
-
 import main.model.TaskTracker;
 import main.model.filter.SortCriteria;
 import main.model.filter.SortFilter;
@@ -46,17 +40,15 @@ import main.model.task.UniqueTaskList.TaskNotFoundException;
 
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
-    EventsCenter eventsCenter;
     
     public static Stack<UndoHistory> undoStack;
     public static Stack<UndoHistory> redoStack;
     
-    TaskTracker taskTracker;
-    UserPrefs userPref;
+    private TaskTracker taskTracker;
     private final FilteredList<Task> filteredTasks;
     private final SortedList<Task> sortedTasks;
-    Expression baseExpression;
-    Expression save;
+    private Expression baseExpression;
+    private Expression save;
     
     public ModelManager(TaskTracker taskTracker, UserPrefs userPref) {
         super();
@@ -64,11 +56,9 @@ public class ModelManager extends ComponentManager implements Model {
         assert userPref != null;
 
         logger.fine("Initializing with task tracker: " + taskTracker + " and user prefs " + userPref);
-        eventsCenter = EventsCenter.getInstance();
-        eventsCenter.registerHandler(this);
+        EventsCenter.getInstance().registerHandler(this);
         
         this.taskTracker = new TaskTracker(taskTracker);
-        this.userPref = userPref;
         filteredTasks = new FilteredList<>(this.taskTracker.getTasks());
         sortedTasks = new SortedList<>(this.filteredTasks);
         sortDefault();
@@ -116,6 +106,7 @@ public class ModelManager extends ComponentManager implements Model {
         addToUndoStack(UndoCommand.DONE,(Task)target);
     }
     
+    //@@author A0142686X
     @Override
     public synchronized void editTask(int index, Task newtask) throws TaskNotFoundException, DuplicateTaskException {
         addToUndoStack(UndoCommand.EDIT, getTaskfromIndex(index), newtask);  //NEED TO CHECK ORDER
@@ -127,8 +118,7 @@ public class ModelManager extends ComponentManager implements Model {
         
     }
     
-    
-    
+    //@@author A0144132W
     /** Raises an event to indicate the model has changed */
     private void indicateTaskTrackerChanged() {
         raise(new TaskTrackerChangedEvent(taskTracker));
@@ -312,7 +302,6 @@ public class ModelManager extends ComponentManager implements Model {
 
         Expression filter = new PredicateExpression();
         filter.and(new MatchQualifier(suggestions));
-        filter.and(new DoneQualifier(false));
         updateFilteredTaskList(filter);
     }
     
@@ -371,7 +360,7 @@ public class ModelManager extends ComponentManager implements Model {
 //                    .findAny()
 //                    .isPresent();
 //            return ((compareDate(date, task.getDeadline())) || (compareDate(date, task.getEndTime())) || (compareDate(date, task.getStartTime())));
-            if (task.getIsEvent()) return DateUtil.dateWithin(task.getStartTime(), task.getEndTime(), date);
+            if (task.getIsEvent()) return DateUtil.dateOverlap(task.getStartTime(), task.getEndTime(), date);
             else if (!task.getIsFloating() && !task.getIsEvent()) return DateUtil.areSameDay(date, task.getDeadline()); 
             else return false;
         }

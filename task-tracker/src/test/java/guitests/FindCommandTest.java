@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import javafx.scene.input.KeyCode;
 import main.commons.events.ui.KeyPressEvent;
 import main.logic.command.FindCommand;
 import main.testutil.TestTask;
@@ -15,7 +14,7 @@ public class FindCommandTest extends TaskTrackerGuiTest {
     
     private void assertFindBehavior(String input, int expectedListLength, TestTask[] expectedList) {
         commandBox.enterCommand(input);
-        raise(new KeyPressEvent(KeyCode.E, input));
+        raise(new KeyPressEvent(input));
         commandBox.pressEnter();
         
         assertResultMessage(String.format(FindCommand.MESSAGE_SUCCESS, expectedListLength));

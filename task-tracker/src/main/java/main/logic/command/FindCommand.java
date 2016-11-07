@@ -8,7 +8,7 @@ public class FindCommand extends Command {
             												+ "Type in keywords found in the desired task's description \n"
             												+ "Eg: " + COMMAND_WORD + " cs2103";
     public static final String MESSAGE_SUCCESS = "Found %1$s matching tasks";
-    
+        
     public FindCommand() {}
     
     @Override

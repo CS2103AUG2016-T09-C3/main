@@ -81,13 +81,29 @@ public class TaskCard extends UiPart {
 
 		if (task.getPriority() == PriorityType.HIGH) {
 			priorityTab.setFill(Color.RED);
-			cardPane.setStyle("-fx-background-color: #ff6666;");
+			if (task.getIsDone()) {
+	             cardPane.setStyle("-fx-background-color: #bd5252;");
+			}
+			else {
+	             cardPane.setStyle("-fx-background-color: #ff6666;");
+			}
 		} else if (task.getPriority() == PriorityType.LOW) {
 			priorityTab.setFill(Color.YELLOWGREEN);
-			cardPane.setStyle("-fx-background-color: #ffffb3;");
-		} else {
+			if (task.getIsDone()) {
+				cardPane.setStyle("-fx-background-color: #cfcf82;");
+			}
+			else {
+				cardPane.setStyle("-fx-background-color: #ffffb3;");
+			}
+		}
+		else {
 			priorityTab.setFill(Color.rgb(255, 117, 26));
-			cardPane.setStyle("-fx-background-color: #ffa366;");
+			if (task.getIsDone()) {
+				cardPane.setStyle("-fx-background-color: #d58551;");
+			}
+			else {
+				cardPane.setStyle("-fx-background-color: #ffa366;");
+			}
 		}
 
 		if (task.isOverdue()) {

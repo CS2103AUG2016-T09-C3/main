@@ -4,7 +4,6 @@ package main.model;
 import main.model.task.Task;
 import main.model.task.TaskType;
 import main.model.filter.SortCriteria;
-import main.model.filter.SortFilter;
 import main.model.task.PriorityType;
 import main.model.task.ReadOnlyTask;
 import main.model.task.UniqueTaskList;
@@ -13,13 +12,8 @@ import main.model.task.UniqueTaskList.TaskNotFoundException;
 import main.commons.core.UnmodifiableObservableList;
 import main.commons.events.model.LoadTaskTrackerEvent;
 import main.commons.events.model.UpdateListWithSuggestionsEvent;
-import main.commons.exceptions.DuplicateDataException;
-
 import java.util.ArrayList;
 import java.util.Date;
-//daryl
-import java.util.Set;
-
 import org.apache.commons.lang3.tuple.Triple;
 
 /**

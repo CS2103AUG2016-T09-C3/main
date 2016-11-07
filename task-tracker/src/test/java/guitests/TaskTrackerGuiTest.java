@@ -68,13 +68,16 @@ public abstract class TaskTrackerGuiTest {
 			commandBox = mainGui.getCommandBox();
 			this.stage = stage;
 		});
-		EventsCenter.clearSubscribers();
+//		EventsCenter.clearSubscribers();
+        EventsCenter.getInstance().registerHandler(this);
+
 		testApp = (TestMain) FxToolkit
 				.setupApplication(() -> new TestMain(this::getInitialData, getDataFileLocation()));
 		FxToolkit.showStage();
 		while (!stage.isShowing())
 			;
 		mainGui.focusOnMainApp();
+		
 	}
 
 	/**

@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class DateUtil {
     
-    /*
+    /**
      * convenient constructor for Date, with time
      * 
      * @returns a Date object
@@ -19,7 +19,7 @@ public class DateUtil {
         return cal.getTime();
     }
 
-    /*
+    /**
      * convenient constructor for Date, without time
      * 
      * @returns a Date object
@@ -30,7 +30,7 @@ public class DateUtil {
         return cal.getTime();
     }
     
-    /*
+    /**
      * @returns today's date
      */
     public static Date getToday(){
@@ -45,24 +45,20 @@ public class DateUtil {
         return cal.getTime();
     }
      
-    /*
-     * checks if the date is within start and end
-     * 
-     * @returns true if the given date is within the start and end date
+    /**
+     * @returns true if the given date overlaps with the given the start and end date
      */
-    public static boolean dateWithin(Date start, Date end, Date date) {
+    public static boolean dateOverlap(Date start, Date end, Date date) {
         if (start == null || end == null || date == null) {
             return false;
         }
-        if (start.before(date) && end.after(date)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        
+        return ((start.before(date) && end.after(date)) 
+                || (areSameDay(start, date) && areSameDay(end, date)));
+
     }
     
-    /*
+    /**
      * compares the 2 dates, not including the time
      * 
      * @returns true if both dates are on the same day
@@ -86,7 +82,7 @@ public class DateUtil {
     }
     
     
-    /*
+    /**
      * @returns a date with a nice readable format
      */
     public static String readableDate(Date date, boolean isInferred) {
@@ -100,7 +96,7 @@ public class DateUtil {
         return df.format(date);
     }
     
-    /*
+    /**
      * takes isInferred as true by default
      * 
      * @returns a a date with a nice readable format, without time
@@ -109,7 +105,7 @@ public class DateUtil {
         return readableDate(date, true);
     }
     
-    /*
+    /**
      * changes the time to the hour given (in 24 hours format) and
      * resets minutes, depending on the boolean input
      *       
