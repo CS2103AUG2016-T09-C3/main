@@ -9,3 +9,4 @@ task-tracker/tasktracker.log.*
 task-tracker/src/test/data/sandbox/
 *.log
 *.xml
+!task-tracker/src/test/data/ManualTesting/SampleData.xml

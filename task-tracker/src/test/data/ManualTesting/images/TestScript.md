@@ -15,7 +15,7 @@
 ### Loading Sample Data
 
 1. With **T-T** opened, you should see something like this <br>
-<img src="images/empty.jpg" <br>
+<img src="docs/images/empty.png" <br>
 2. To load the data, type `storage src/test/data/ManualTesting/SampleData.xml`
 
 ### Testing Commands

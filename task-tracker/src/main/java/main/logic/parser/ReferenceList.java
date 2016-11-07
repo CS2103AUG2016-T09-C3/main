@@ -68,6 +68,17 @@ public class ReferenceList {
             .add("finish")
             .build();
     
+    // connectors to be discarded
+    public static final Set<String> connectorSet = ImmutableSet.<String>builder()
+            .add("by")
+            .add("from")
+            .add("on")
+            .add("due")
+            .add("during")
+            .add("at")
+            .add("every")
+            .build();
+    
     // for autocomplete
     public static final Set<String> listSet = ImmutableSet.<String>builder()
             .add("high ")

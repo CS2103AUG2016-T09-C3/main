@@ -336,9 +336,12 @@ public class MainParser {
         String description = info.getLeft();
         Boolean isInferred = info.getRight().get(0);
         Boolean isRecurring = info.getRight().get(1);
-        
+                
         if (description.trim().equals("")) {
             throw new IllegalArgumentException();
+        }
+        else {
+            description = removeConnectors(description);
         }
         
         if (dates.isEmpty()) {
@@ -356,6 +359,26 @@ public class MainParser {
         }
     }
     
+    /**
+     * Removes unwanted connectors at the end. Connectors that are removed are found
+     * in the connectSet in ReferenceList class.
+     */
+    private String removeConnectors(String description) {
+        int end_index;
+        
+        for (String connector : ReferenceList.connectorSet) {
+            if (connector.length() > description.length()) {
+                continue;
+            }
+            
+            end_index = description.length() - connector.length();
+            if (argumentIndexInString(description, connector) == end_index) {
+                return description.substring(0, end_index).trim();
+            }
+        }
+        return description;
+    }
+
     /**
      * Extracts the priority from the given input. Priority is indicated by the 
      * PriorityType enum class.

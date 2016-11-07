@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tasktracker>
+    <tasks>
+        <message>RC4 presentation</message>
+        <deadline>2016-11-04T16:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>false</isInferred>
+    </tasks>
+    <tasks>
+        <message>call Vanessa for RC4 script</message>
+        <isRecurring>false</isRecurring>
+        <priority>HIGH</priority>
+        <type>FLOATING</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>implement sine wave</message>
+        <deadline>2016-11-05T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>finish Vivado project</message>
+        <deadline>2016-11-07T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>HIGH</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>buy tickets for GnR</message>
+        <deadline>2016-11-27T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>LOW</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>Research case studies for IoT</message>
+        <deadline>2016-11-04T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>book air tickets for India</message>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>FLOATING</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>make Tableau presentation</message>
+        <deadline>2016-11-06T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>HIGH</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>watch f1</message>
+        <startTime>2016-11-06T17:00:00+08:00</startTime>
+        <endTime>2016-11-06T20:00:00+08:00</endTime>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>EVENT</type>
+        <isDone>false</isDone>
+        <isInferred>false</isInferred>
+    </tasks>
+    <tasks>
+        <message>complete arduino project</message>
+        <deadline>2016-11-05T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>call Dave</message>
+        <isRecurring>false</isRecurring>
+        <priority>LOW</priority>
+        <type>FLOATING</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>study physics</message>
+        <deadline>2016-11-20T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>read software notes</message>
+        <deadline>2016-11-22T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>clean room</message>
+        <isRecurring>false</isRecurring>
+        <priority>LOW</priority>
+        <type>FLOATING</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>buy new lamp</message>
+        <deadline>2016-11-30T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>LOW</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>goto RC4 office to return card</message>
+        <isRecurring>false</isRecurring>
+        <priority>HIGH</priority>
+        <type>FLOATING</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>claim bumblebee reimbursement</message>
+        <isRecurring>false</isRecurring>
+        <priority>LOW</priority>
+        <type>FLOATING</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>test voltage regulator</message>
+        <deadline>2016-11-08T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>HIGH</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>ask for tennis CCA</message>
+        <startTime>2016-11-18T14:00:00+08:00</startTime>
+        <endTime>2016-11-18T15:00:00+08:00</endTime>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>EVENT</type>
+        <isDone>false</isDone>
+        <isInferred>false</isInferred>
+    </tasks>
+    <tasks>
+        <message>recheck physics marks</message>
+        <isRecurring>false</isRecurring>
+        <priority>LOW</priority>
+        <type>FLOATING</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>defragment laptop</message>
+        <deadline>2016-11-30T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>research for amaravati</message>
+        <deadline>2016-11-09T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>LOW</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>prepare slides for amaravati</message>
+        <deadline>2016-11-09T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>write RC4 report</message>
+        <deadline>2016-11-22T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>HIGH</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>prepare for software demo</message>
+        <deadline>2016-11-03T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>HIGH</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>do doggyfooding</message>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>FLOATING</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>start fixing bugs for tasktracker</message>
+        <deadline>2016-11-05T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>talk to Prof Martin for report</message>
+        <deadline>2016-11-20T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>book bus tickets from delhi</message>
+        <deadline>2016-12-02T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>goto electrical lab to test sig gen</message>
+        <isRecurring>false</isRecurring>
+        <priority>HIGH</priority>
+        <type>FLOATING</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>watch svadesh</message>
+        <deadline>2016-11-04T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>LOW</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>schedule frisbee session</message>
+        <deadline>2016-11-04T16:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>false</isInferred>
+    </tasks>
+    <tasks>
+        <message>attend systems dynamics class</message>
+        <deadline>2016-11-02T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>true</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>implement triangle wave</message>
+        <deadline>2016-10-30T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>true</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>prepare for systems presentation</message>
+        <deadline>2016-11-02T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>true</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>buy noodles for reading week</message>
+        <deadline>2016-11-02T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>LOW</priority>
+        <type>DEADLINE</type>
+        <isDone>true</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>profread Krishna's paper</message>
+        <isRecurring>false</isRecurring>
+        <priority>HIGH</priority>
+        <type>FLOATING</type>
+        <isDone>true</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>fix redo bug</message>
+        <isRecurring>false</isRecurring>
+        <priority>HIGH</priority>
+        <type>FLOATING</type>
+        <isDone>true</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>organise Rohan's bday</message>
+        <startTime>2016-10-30T20:00:00+08:00</startTime>
+        <endTime>2016-10-30T22:00:00+08:00</endTime>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>EVENT</type>
+        <isDone>true</isDone>
+        <isInferred>false</isInferred>
+    </tasks>
+    <tasks>
+        <message>buy new bedsheets</message>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>FLOATING</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>return ishanee's book</message>
+        <isRecurring>false</isRecurring>
+        <priority>HIGH</priority>
+        <type>FLOATING</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>fix tennis racquet</message>
+        <deadline>2016-11-04T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>LOW</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>write executive summary for amaravati</message>
+        <deadline>2016-11-04T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>email prof massimo alioto</message>
+        <deadline>2016-11-12T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>LOW</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>check on</message>
+        <deadline>2016-09-01T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>HIGH</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>buy one punch manga</message>
+        <deadline>2016-12-25T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>laugh hysterically</message>
+        <deadline>2016-11-06T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>SU exams</message>
+        <deadline>2016-11-29T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>study ubuntu</message>
+        <startTime>0900-12-20T10:00:00+08:00</startTime>
+        <endTime>0900-12-20T10:00:00+08:00</endTime>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>EVENT</type>
+        <isDone>false</isDone>
+        <isInferred>false</isInferred>
+    </tasks>
+    <tasks>
+        <message>meditate</message>
+        <deadline>2016-11-29T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>exercise later</message>
+        <startTime>2016-11-06T17:00:00+08:00</startTime>
+        <endTime>2016-11-06T21:00:00+08:00</endTime>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>EVENT</type>
+        <isDone>false</isDone>
+        <isInferred>false</isInferred>
+    </tasks>
+    <tasks>
+        <message>revise for exams</message>
+        <deadline>2016-11-22T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>spray insecticide</message>
+        <deadline>2016-12-27T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>celebrate mum birthday</message>
+        <deadline>2016-11-13T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>sigh with fatigue later</message>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>FLOATING</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>test for voltage disturbances</message>
+        <deadline>2016-11-03T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>study latches</message>
+        <deadline>2016-11-03T08:00:00+08:00</deadline>
+        <isRecurring>false</isRecurring>
+        <priority>HIGH</priority>
+        <type>DEADLINE</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+    <tasks>
+        <message>question death</message>
+        <isRecurring>false</isRecurring>
+        <priority>NORMAL</priority>
+        <type>FLOATING</type>
+        <isDone>false</isDone>
+        <isInferred>true</isInferred>
+    </tasks>
+</tasktracker>
