@@ -7,7 +7,7 @@
 
 <img src="docs/images/T-T.png" width="200p" height="200p">
 
-Task Tracker (T-T) is an easy-to-use software which helps you manage your daily tasks. <br>It is a simple and fun product which uses a creative Graphical User Interface to make the operations quick, easy and intuitive.
+Task Tracker (T-T) is an easy-to-use software which helps you manage your daily tasks. <br>It is a simple and fun product which uses a creative Graphical User Interface to make the operations quick, easy and intuitive. Currently maintained only by cardboardcode. 
 
 
 * [About Us](https://github.com/CS2103AUG2016-T09-C3/main/blob/master/docs/AboutUs.md)
